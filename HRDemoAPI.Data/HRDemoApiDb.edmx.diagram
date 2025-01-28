@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9e322cfa27724358aa5e6b551239bd50" Name="Diagram1" ShowGrid="true" >
+        <EntityTypeShape EntityType="HRDemoApiDb.Employee" PointX="6.625" PointY="4.875" Width="1.5" />
+        <EntityTypeShape EntityType="HRDemoApiDb.Department" PointX="8.75" PointY="3.625" Width="1.5" />
+        <AssociationConnector Association="HRDemoApiDb.EmployeeDepartment" />
+        <AssociationConnector Association="HRDemoApiDb.DepartmentManager" />
+        <EntityTypeShape EntityType="HRDemoApiDb.User" Width="1.5" PointX="6.625" PointY="2.375" />
+        <AssociationConnector Association="HRDemoApiDb.FK_UserEmployee" />
+        <EntityTypeShape EntityType="HRDemoApiDb.Attendance" Width="1.5" PointX="4.5" PointY="3.125" />
+        <EntityTypeShape EntityType="HRDemoApiDb.Leave" Width="1.5" PointX="8.75" PointY="6" />
+        <EntityTypeShape EntityType="HRDemoApiDb.Payroll" Width="1.5" PointX="4.5" PointY="6.125" />
+        <AssociationConnector Association="HRDemoApiDb.FK_EmployeeAttendance" />
+        <AssociationConnector Association="HRDemoApiDb.FK_EmployeeLeave" />
+        <AssociationConnector Association="HRDemoApiDb.FK_EmployeePayroll" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
