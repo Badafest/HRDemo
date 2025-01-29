@@ -19,14 +19,14 @@ namespace HRDemoAPI.Controllers
         public HttpResponseMessage Post(int id, bool hire = true)
         {
             Employee employee = _hRDemoAPIDb.Employees.Find(id);
+            if (employee == null)
+            {
+                return HttpUtilities.CreateResponseMessage(null, System.Net.HttpStatusCode.NotFound);
+            }
             var validatedResponse = HttpUtilities.ValidateManagerRole(employee.DepartmentID);
             if (validatedResponse != null)
             {
                 return validatedResponse;
-            }
-            if (employee == null)
-            {
-                return HttpUtilities.CreateResponseMessage(null, System.Net.HttpStatusCode.NotFound);
             }
             if (employee.Status == EmployeeStatus.Active && hire)
             {

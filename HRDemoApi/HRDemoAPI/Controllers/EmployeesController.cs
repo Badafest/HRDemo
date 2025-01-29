@@ -70,14 +70,14 @@ namespace HRDemoAPI.Controllers
         public HttpResponseMessage Put(int id, [FromBody]EmployeeRequest employeeRequest)
         {
             Employee employee = _hRDemoAPIDb.Employees.Find(id);
+            if (employee == null)
+            {
+                return HttpUtilities.CreateResponseMessage(null, System.Net.HttpStatusCode.NotFound);
+            }
             var validatedResponse = HttpUtilities.ValidateManagerRole(new int?[] { employee.DepartmentID, employeeRequest.DepartmentID });
             if (validatedResponse != null)
             {
                 return validatedResponse;
-            }
-            if (employee == null)
-            {
-                return HttpUtilities.CreateResponseMessage(null, System.Net.HttpStatusCode.NotFound);
             }
             Employee newEmployee = employeeRequest.MapPutRequest(id);
             employee.FirstName = newEmployee.FirstName;
@@ -96,14 +96,14 @@ namespace HRDemoAPI.Controllers
         public HttpResponseMessage Patch(int id, [FromBody] EmployeeRequest employeeRequest)
         {
             Employee employee = _hRDemoAPIDb.Employees.Find(id);
+            if (employee == null)
+            {
+                return HttpUtilities.CreateResponseMessage(null, System.Net.HttpStatusCode.NotFound);
+            }
             var validatedResponse = HttpUtilities.ValidateManagerRole(new int?[] { employee.DepartmentID, employeeRequest.DepartmentID });
             if (validatedResponse != null)
             {
                 return validatedResponse;
-            }
-            if (employee == null)
-            {
-                return HttpUtilities.CreateResponseMessage(null, System.Net.HttpStatusCode.NotFound);
             }
             if (!string.IsNullOrEmpty(employeeRequest.FirstName))
             {
@@ -168,14 +168,14 @@ namespace HRDemoAPI.Controllers
         public HttpResponseMessage Delete(int id)
         {
             Employee employee = _hRDemoAPIDb.Employees.Find(id);
+            if (employee == null)
+            {
+                return HttpUtilities.CreateResponseMessage(null, System.Net.HttpStatusCode.NotFound);
+            }
             var validatedResponse = HttpUtilities.ValidateManagerRole(employee.DepartmentID);
             if (validatedResponse != null)
             {
                 return validatedResponse;
-            }
-            if (employee == null)
-            {
-                return HttpUtilities.CreateResponseMessage(null, System.Net.HttpStatusCode.NotFound);
             }
             _hRDemoAPIDb.Employees.Remove(employee);
             _hRDemoAPIDb.SaveChanges();
