@@ -12,6 +12,8 @@ namespace HRDemoAPI.Data
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class HRDemoApiDbContainer : DbContext
     {
@@ -32,5 +34,26 @@ namespace HRDemoAPI.Data
         public virtual DbSet<Attendance> Attendances { get; set; }
         public virtual DbSet<Leave> Leaves { get; set; }
         public virtual DbSet<Payroll> Payrolls { get; set; }
+    
+        public virtual ObjectResult<GetEmployeeMonthlyReport_Result> GetEmployeeMonthlyReport(Nullable<int> employeeId, Nullable<int> year, Nullable<int> month, Nullable<double> offset)
+        {
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("employeeId", employeeId) :
+                new ObjectParameter("employeeId", typeof(int));
+    
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            var monthParameter = month.HasValue ?
+                new ObjectParameter("month", month) :
+                new ObjectParameter("month", typeof(int));
+    
+            var offsetParameter = offset.HasValue ?
+                new ObjectParameter("offset", offset) :
+                new ObjectParameter("offset", typeof(double));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeeMonthlyReport_Result>("GetEmployeeMonthlyReport", employeeIdParameter, yearParameter, monthParameter, offsetParameter);
+        }
     }
 }

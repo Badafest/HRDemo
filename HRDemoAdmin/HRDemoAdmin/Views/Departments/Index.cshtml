@@ -1,0 +1,10 @@
+﻿
+@model IEnumerable<HRDemoAdmin.Services.Models.DepartmentResponse>
+@{
+    ViewData["Title"] = "Departments";
+}
+
+<h2 class="title">Departments</h2>
+
+@Html.Partial("_DepartmentsList", Model)
+

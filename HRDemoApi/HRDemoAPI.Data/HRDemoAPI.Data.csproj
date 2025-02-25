@@ -75,6 +75,9 @@
     <Compile Include="EmployeeStatus.cs">
       <DependentUpon>HRDemoApiDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="GetEmployeeMonthlyReport_Result.cs">
+      <DependentUpon>HRDemoApiDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="HRDemoApiDb.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

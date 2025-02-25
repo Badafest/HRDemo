@@ -146,6 +146,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\EmployeeReportController.cs" />
     <Compile Include="Controllers\PayrollStatusController.cs" />
     <Compile Include="Controllers\PayrollsController.cs" />
     <Compile Include="Controllers\LeaveStatusController.cs" />
@@ -154,7 +155,9 @@
     <Compile Include="Controllers\AttendancesController.cs" />
     <Compile Include="Controllers\EmployeeStatusController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\HRDemoAuthorizeAttribute.cs" />
+    <Compile Include="Filters\NullParameterBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -190,6 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Users\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

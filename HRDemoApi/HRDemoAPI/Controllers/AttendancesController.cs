@@ -20,7 +20,7 @@ namespace HRDemoAPI.Controllers
             _hRDemoAPIDb = hRDemoAPIDb;
         }
         // GET api/attendances
-        public IEnumerable<AttendanceResponse> Get(int count = 10, int page = 1, int employeeId = 0, string startDate = null, string endDate = null)
+        public IEnumerable<AttendanceResponse> Get(int count = default, int page = default, int employeeId = default, string startDate = null, string endDate = null)
         {
             var isStartDateParsed = DateTimeOffset.TryParse(startDate, out var startDateTime);
             var isEndDateParsed = DateTimeOffset.TryParse(endDate, out var endDateTime);

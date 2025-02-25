@@ -13,10 +13,10 @@ namespace HRDemoAPI.Data
     
     public partial class EmployeeSalary
     {
-        public Nullable<double> GrossAmount { get; set; }
-        public Nullable<double> PreTaxDeduction { get; set; }
-        public Nullable<double> TaxDeduction { get; set; }
-        public Nullable<double> PostTaxDeduction { get; set; }
-        public Nullable<double> NetAmount { get; set; }
+        public double GrossAmount { get; set; }
+        public double PreTaxDeduction { get; set; }
+        public double TaxDeduction { get; set; }
+        public double PostTaxDeduction { get; set; }
+        public double NetAmount { get; set; }
     }
 }

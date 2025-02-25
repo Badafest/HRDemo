@@ -19,10 +19,10 @@ namespace HRDemoAPI.Controllers
             _hRDemoAPIDb = hRDemoAPIDb;
         }
         // GET api/Departments
-        public IEnumerable<DepartmentResponse> Get(int count = 10, int page = 1, string name = "")
+        public IEnumerable<DepartmentResponse> Get(int count = default, int page = default, string name = default)
         {
              return _hRDemoAPIDb.Departments
-                .Where(d => d.Name.Contains(name))
+                .Where(d => string.IsNullOrEmpty(name) || d.Name.Contains(name))
                 .OrderBy(d => d.DepartmentID)
                 .Paginate(count, page)
                 .Include("Manager")

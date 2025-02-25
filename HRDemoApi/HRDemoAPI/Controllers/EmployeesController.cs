@@ -19,7 +19,7 @@ namespace HRDemoAPI.Controllers
             _hRDemoAPIDb = hRDemoAPIDb;
         }
         // GET api/employees
-        public IEnumerable<EmployeePublicResponse> Get(int count = 10, int page = 1, string firstName = "", string lastName = "", string jobTitle = "", string phone = "", string email = "")
+        public IEnumerable<EmployeePublicResponse> Get(int count = default, int page = default, string firstName = default, string lastName = default, string jobTitle = default, string phone = default, string email = default)
         {
             return _hRDemoAPIDb.Employees
                 .Where(e => e.FirstName.Contains(firstName))

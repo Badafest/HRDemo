@@ -39,13 +39,15 @@ namespace HRDemoApp.Utilities
             return responseObject.CreateResponseMessage(statusCode);
         }
 
-        public static IQueryable<T> Paginate<T>(this IQueryable<T> filterQuery, int count, int page)
+        public static IQueryable<T> Paginate<T>(this IQueryable<T> filterQuery, int queryCount, int queryPage)
         {
             int totalCount = filterQuery.Count();
+            int count = queryCount == default ? totalCount : queryCount;
+            int page = queryPage == default ? 1 : queryPage;
             HttpContext.Current?.Response?.Headers?.Add("X-Total-Count", totalCount.ToString());
             HttpContext.Current?.Response?.Headers?.Add("X-Total-Pages", Math.Floor((double)totalCount/count + 1).ToString());
             HttpContext.Current?.Response?.Headers?.Add("X-Current-Page", page.ToString());
-            return filterQuery.Skip((page - 1) * count).Take(count);
+            return filterQuery.Skip(((page) - 1) * count).Take(count);
         }
 
         public static HttpResponseMessage ValidateAdminRole()

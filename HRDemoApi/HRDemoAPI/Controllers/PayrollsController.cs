@@ -19,7 +19,7 @@ namespace HRDemoAPI.Controllers
             _hRDemoAPIDb = hRDemoAPIDb;
         }
         // GET api/payrolls
-        public IEnumerable<PayrollResponse> Get(int count = 10, int page = 1, int employee = default, int month = default, int year = default)
+        public IEnumerable<PayrollResponse> Get(int count = default, int page = default, int employee = default, int month = default, int year = default)
         {
             return _hRDemoAPIDb.Payrolls
                 .Where(p => employee == default || employee == p.EmployeeID)

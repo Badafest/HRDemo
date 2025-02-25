@@ -1,0 +1,56 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.title {
+    margin-bottom: 8px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.sortable-header th {
+    cursor: pointer;
+    background-color: #f8f9fa;
+}
+
+.sortable-header th a {
+    text-align: left;
+    text-decoration: none;
+}
+
+.pagination-footer {
+    text-align: center;
+    margin-top: 12px;
+}
+
+.pagination-footer a {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    margin: 2px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.pagination-footer a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.alt {
+    background-color: #f2f2f2;
+}

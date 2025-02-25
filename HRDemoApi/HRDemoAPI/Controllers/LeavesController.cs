@@ -20,7 +20,7 @@ namespace HRDemoAPI.Controllers
             _hRDemoAPIDb = hRDemoAPIDb;
         }
         // GET api/leaves
-        public IEnumerable<LeaveResponse> Get(int count = 10, int page = 1, int employeeId = 0, LeaveType? type = null, string startDate = null, string endDate = null)
+        public IEnumerable<LeaveResponse> Get(int count = default, int page = default, int employeeId = 0, LeaveType? type = null, string startDate = null, string endDate = null)
         {
             var isStartDateParsed = DateTimeOffset.TryParse(startDate, out var startDateTime);
             var isEndDateParsed = DateTimeOffset.TryParse(endDate, out var endDateTime);

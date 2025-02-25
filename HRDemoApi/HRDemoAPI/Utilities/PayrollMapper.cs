@@ -15,11 +15,11 @@ namespace HRDemoApp.Utilities
                Status = payroll.Status,
                Salary = payroll.Salary == null ? null : new PayrollResponseSalary
                {
-                   GrossAmount = payroll.Salary.GrossAmount ?? 0,
-                   PreTaxDeduction = payroll.Salary.PreTaxDeduction ?? 0,
-                   TaxDeduction = payroll.Salary.TaxDeduction ?? 0,
-                   PostTaxDeduction = payroll.Salary.PostTaxDeduction ?? 0,
-                   NetAmount = payroll.Salary.NetAmount ?? 0
+                   GrossAmount = payroll.Salary.GrossAmount,
+                   PreTaxDeduction = payroll.Salary.PreTaxDeduction,
+                   TaxDeduction = payroll.Salary.TaxDeduction,
+                   PostTaxDeduction = payroll.Salary.PostTaxDeduction,
+                   NetAmount = payroll.Salary.NetAmount
                },
                Employee = payroll.Employee?.MapQueryResult()
             };
