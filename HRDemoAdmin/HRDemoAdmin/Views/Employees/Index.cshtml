@@ -1,7 +1,65 @@
 ﻿
+@model IEnumerable<HRDemoAdmin.Services.Models.EmployeeResponse>
 @{
     ViewData["Title"] = "Employees";
+    var grid = new WebGrid(source: Model, canPage: true, rowsPerPage: 3);
 }
 
-<h2 class="title">Employees</h2>
+<div class="my-2 d-flex justify-content-between align-items-center">
+    <h2 class="title">Employees</h2>
+    @Html.ActionLink("Create New Employee", "Create")
+</div>
+
+<form method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-auto">
+        <label for="firstName" class="col-form-label">First Name:</label>
+        <input type="text" id="firstName" name="firstName" class="form-control" value="@Context.Request.QueryString.Get("firstName")">
+    </div>
+    <div class="col-auto">
+        <label for="lastName" class="col-form-label">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" class="form-control" value="@Context.Request.QueryString.Get("lastName")">
+    </div>
+    <div class="col-auto">
+        <label for="jobTitle" class="col-form-label">Job Title:</label>
+        <input type="text" id="jobTitle" name="jobTitle" class="form-control" value="@Context.Request.QueryString.Get("jobTitle")">
+    </div>
+    <div class="col-auto">
+        <label for="email" class="col-form-label">Email:</label>
+        <input type="text" id="email" name="email" class="form-control" value="@Context.Request.QueryString.Get("email")">
+    </div>
+    <div class="col-auto">
+        <label for="phone" class="col-form-label">Phone Number:</label>
+        <input type="text" id="phone" name="phone" class="form-control" value="@Context.Request.QueryString.Get("phone")">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+@grid.GetHtml(
+    tableStyle: "table table-bordered table-striped",
+    headerStyle: "header sortable-header",
+    rowStyle: "table-row",
+    columns: grid.Columns(
+        grid.Column("EmployeeID", "ID", style: "column-small", canSort: true),
+        grid.Column("Name", format: item => new HtmlString($"<a href='./Employees/Details/{item.EmployeeId}'>{item.FirstName} {item.LastName}</a>"), style: "column-medium", canSort: true),
+        grid.Column("JobTitle", "Job Title", style: "column-medium", canSort: false),
+        grid.Column(header: "Department", format: item => new HtmlString($"<a href='/Departments/Details/{item.Department.DepartmentID}'>{item.Department.Name}</a>"), style: "column-medium", canSort: false),
+        grid.Column("Email", "Email", style: "column-medium", canSort: false),
+        grid.Column("Phone", "Phone Number", style: "column-medium", canSort: false),
+        grid.Column("Address", format: item => new HtmlString($"<address>" +
+        $"<div>{item.Address.Line1}</div>" +
+        $"<div>{item.Address.Line2}</div>" +
+        $"<div>{item.Address.PostalCode}, {item.Address.City}, {item.Address.State}, {item.Address.Country}</div>" +
+        $"</address>"), style: "column-medium", canSort: false)
+    ),
+    footerStyle: "hidden"
+)
+
+<!-- Custom Pagination -->
+<div class="custom-pagination">
+    @grid.Pager(WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                previousText: "← Prev",
+                nextText: "Next →")
+</div>
 

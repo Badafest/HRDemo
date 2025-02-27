@@ -31,10 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataAnnotationsExtensions, Version=5.0.1.27, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DataAnnotationsExtensions.5.0.1.27\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmployeeService.cs" />
     <Compile Include="Models\*.cs" />
     <Compile Include="ServiceBase.cs" />
     <Compile Include="DepartmentService.cs" />

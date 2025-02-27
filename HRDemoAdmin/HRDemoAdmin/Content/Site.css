@@ -5,8 +5,17 @@
     padding-right: 15px;
 }
 
+a{
+    text-underline-offset: 4px;
+}
+
 .title {
     margin-bottom: 8px;
+}
+
+.control-label{
+    font-weight: 600;
+    text-transform: capitalize;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -14,13 +23,6 @@
 */
 .dl-horizontal dt {
     white-space: normal;
-}
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
 }
 
 .sortable-header th {
@@ -33,24 +35,60 @@ textarea {
     text-decoration: none;
 }
 
-.pagination-footer {
-    text-align: center;
-    margin-top: 12px;
+.alt {
+    background-color: #f2f2f2;
 }
 
-.pagination-footer a {
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    margin: 2px;
+.column-small{
+    max-width: 100px;
+}
+
+.column-medium{
+    max-width: 300px;
+}
+
+.column-large{
+    max-width: 500px;
+}
+
+.hidden{
+    display: none;
+}
+
+/* Pagination styles */
+.custom-pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.custom-pagination a,
+.custom-pagination span {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     text-decoration: none;
     color: #007bff;
 }
 
-.pagination-footer a:hover {
-    background-color: #007bff;
-    color: white;
+.custom-pagination span{
+    cursor: not-allowed;
+    color: #333;
 }
 
-.alt {
-    background-color: #f2f2f2;
+.custom-pagination a:hover {
+    background-color: #f1f1f1;
+    color: #007bff;
+}
+
+.custom-pagination .current-page {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
+
+.custom-pagination .disabled {
+    color: #aaa;
+    pointer-events: none;
 }

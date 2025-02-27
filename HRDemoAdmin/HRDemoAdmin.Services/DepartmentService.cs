@@ -1,5 +1,6 @@
 ﻿using HRDemoAdmin.Services.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HRDemoAdmin.Services
 {
@@ -8,30 +9,29 @@ namespace HRDemoAdmin.Services
         public DepartmentService(string baseUrl) : base(baseUrl)
         { 
         }
-        public IEnumerable<DepartmentResponse> GetDepartments(string name = "")
+        public ApiResponse<IEnumerable<DepartmentResponse>> GetDepartments(string name = "")
         {
-            var details = Get<List<DepartmentResponse>>($"/departments?name={name}");
-            return details;
+            return Get<IEnumerable<DepartmentResponse>>($"/departments?name={name}");
         }
-        public DepartmentResponse GetDepartmentDetails(int id)
+        public ApiResponse<DepartmentResponse> GetDepartmentDetails(int id)
         {
-            var details = Get<DepartmentResponse>($"/departments/{id}");
-            return details;
+            return Get<DepartmentResponse>($"/departments/{id}");
         }
-        public DepartmentResponse DeleteDepartment(int id)
+        public ApiResponse<DepartmentResponse> DeleteDepartment(int id)
         {
-            var details = Delete<DepartmentResponse>($"/departments/{id}");
-            return details;
+            return Delete<DepartmentResponse>($"/departments/{id}");
         }
-        public DepartmentResponse CreateDepartment(DepartmentRequest departmentRequest)
+        public ApiResponse<DepartmentResponse> CreateDepartment(DepartmentRequest departmentRequest)
         {
-            var details = Post<DepartmentResponse>("/departments", departmentRequest);
-            return details;
+            return Post<DepartmentResponse>("/departments", departmentRequest);
         }
-        public DepartmentResponse EditDepartment(DepartmentRequest departmentRequest)
+        public ApiResponse<DepartmentResponse> EditDepartment(int id, DepartmentRequest departmentRequest)
         {
-            var details = Put<DepartmentResponse>("/departments", departmentRequest);
-            return details;
+            return Put<DepartmentResponse>($"/departments/{id}", departmentRequest);
+        }
+        public EmployeeResponse GetManagerByEmail(string email) 
+        {
+            return Get<List<EmployeeResponse>>($"/employees?email={email}&count=1").Data?.FirstOrDefault();
         }
     }
 }

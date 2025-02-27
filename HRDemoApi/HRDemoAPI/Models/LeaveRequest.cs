@@ -1,5 +1,6 @@
 ﻿using HRDemoAPI.Data;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace HRDemoApp.Models
 {
@@ -11,7 +12,7 @@ namespace HRDemoApp.Models
         public System.DateTimeOffset StartDate { get; set; }
         [JsonProperty("endDate")]
         public System.DateTimeOffset EndDate { get; set; }
-        [JsonProperty("reason")]
+        [JsonProperty("reason"), Required]
         public string Reason { get; set; }
 
         [JsonProperty("employeeId")]

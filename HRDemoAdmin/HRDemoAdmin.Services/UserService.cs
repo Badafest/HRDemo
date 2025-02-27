@@ -10,8 +10,7 @@ namespace HRDemoAdmin.Services
         }
         public UserResponse GetUserDetails()
         {
-            var details = Get<UserResponse>("/user"); ;
-            return details;
+            return Get<UserResponse>("/user").Data;
         }
     }
 }

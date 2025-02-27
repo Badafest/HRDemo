@@ -1,12 +1,13 @@
 ﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace HRDemoApp.Models
 {
     public class PayrollRequest
     {
-        [JsonProperty("month")]
+        [JsonProperty("month"), Required]
         public short Month { get; set; }
-        [JsonProperty("year")]
+        [JsonProperty("year"), Required]
         public short Year { get; set; }
         [JsonProperty("employeeId")]
         public int EmployeeID { get; set; }

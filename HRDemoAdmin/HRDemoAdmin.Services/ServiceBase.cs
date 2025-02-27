@@ -3,9 +3,22 @@ using System.Net.Http;
 using System;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace HRDemoAdmin.Services
 {
+    public interface IApiResponse
+    {
+        bool Success { get; set; }
+        JObject ErrorResponse { get; set;}
+    }
+    public class ApiResponse<T>: IApiResponse
+    {
+        public T Data { get; set; }
+        public bool Success { get; set; }
+        public JObject ErrorResponse { get; set; }
+    }
     public class ServiceBase
     {
         private readonly string _baseUrl;
@@ -15,35 +28,30 @@ namespace HRDemoAdmin.Services
             _baseUrl = baseUrl;
         }
 
-        public T Get<T>(string endpoint)
+        public ApiResponse<T> Get<T>(string endpoint)
         {
-            T result = CallApi<T>(endpoint, HttpMethod.Get);
-            return result;
+            return CallApi<T>(endpoint, HttpMethod.Get);
         }
 
-        public T Delete<T>(string endpoint)
+        public ApiResponse<T> Delete<T>(string endpoint)
         {
-            T result = CallApi<T>(endpoint, HttpMethod.Delete);
-            return result;
+            return CallApi<T>(endpoint, HttpMethod.Delete);
         }
 
-        public T Post<T>(string endpoint, object content)
+        public ApiResponse<T> Post<T>(string endpoint, object content = null)
         {
-            T result = CallApi<T>(endpoint, HttpMethod.Post, content);
-            return result;
+            return CallApi<T>(endpoint, HttpMethod.Post, content);
         }
 
-        public T Put<T>(string endpoint, object content)
+        public ApiResponse<T> Put<T>(string endpoint, object content = null)
         {
-            T result = CallApi<T>(endpoint, HttpMethod.Put, content);
-            return result;
+            return CallApi<T>(endpoint, HttpMethod.Put, content);
         }
-        public T Patch<T>(string endpoint, object content)
+        public ApiResponse<T> Patch<T>(string endpoint, object content = null)
         {
-            T result = CallApi<T>(endpoint, new HttpMethod("PATCH"), content);
-            return result;
+            return CallApi<T>(endpoint, new HttpMethod("PATCH"), content);
         }
-        private T CallApi<T>(string endpoint, HttpMethod method, object content = null)
+        private ApiResponse<T> CallApi<T>(string endpoint, HttpMethod method, object content = null)
         {
             using (HttpClientHandler handler = new HttpClientHandler { UseDefaultCredentials = true }) // Pass Windows credentials
             using (HttpClient client = new HttpClient(handler))
@@ -53,15 +61,26 @@ namespace HRDemoAdmin.Services
                 {
                     RequestUri = new Uri(_baseUrl + endpoint),
                     Method = method,
-                    Content = content == null ? null : new StringContent(JsonConvert.SerializeObject(content))
-                };
+                    Content = content == null ? null : new StringContent(
+                        JsonConvert.SerializeObject(content), 
+                        encoding: Encoding.UTF8, 
+                        mediaType: "application/json"),
+                }; 
                 HttpResponseMessage response =  Task.Run(() => client.SendAsync(request)).Result;
-                if (response.IsSuccessStatusCode)
+                string json = Task.Run(() => response.Content.ReadAsStringAsync()).Result;
+                var apiResponse = new ApiResponse<T>() 
+                { 
+                    Success = response.IsSuccessStatusCode
+                };
+                if (apiResponse.Success)
                 {
-                    string json = Task.Run(() => response.Content.ReadAsStringAsync()).Result;
-                    return JsonConvert.DeserializeObject<T>(json);
+                    apiResponse.Data = JsonConvert.DeserializeObject<T>(json);
+                } 
+                else
+                {
+                    apiResponse.ErrorResponse = JsonConvert.DeserializeObject<JObject>(json);
                 }
-                throw new Exception("Failed to  receive response from API: " + response.StatusCode);
+                return apiResponse;
             }
         }
     }

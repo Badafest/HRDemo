@@ -1,23 +1,22 @@
-﻿using HRDemoAPI.Data;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace HRDemoApp.Models
 {
     public class EmployeeRequest
     {
-        [JsonProperty("firstName")]
+        [JsonProperty("firstName"), Required]
         public string FirstName { get; set; }
-        [JsonProperty("lastName")]
+        [JsonProperty("lastName"), Required]
         public string LastName { get; set; }
-        [JsonProperty("email"), EmailAddress]
+        [JsonProperty("email"), EmailAddress, Required]
         public string Email { get; set; }
-        [JsonProperty("phone"), Phone]
+        [JsonProperty("phone"), Phone, Required]
         public string Phone { get; set; }
-        [JsonProperty("jobTitle")]
+        [JsonProperty("jobTitle"), Required]
         public string JobTitle { get; set; }
 
-        [JsonProperty("salary")]
+        [JsonProperty("salary"), Required]
         public double Salary { get; set; }
         [JsonProperty("departmentId")]
         public int DepartmentID { get; set; }
@@ -27,15 +26,15 @@ namespace HRDemoApp.Models
 
     public class EmployeeRequestAddress
     {
-        [JsonProperty("line1")]
+        [JsonProperty("line1"), Required]
         public string Line1 { get; set; }
-        [JsonProperty("line2")]
+        [JsonProperty("line2"), Required]
         public string Line2 { get; set; }
-        [JsonProperty("city")]
+        [JsonProperty("city"), Required]
         public string City { get; set; }
-        [JsonProperty("postalCode")]
+        [JsonProperty("postalCode"), Required]
         public string PostalCode { get; set; }
-        [JsonProperty("state")]
+        [JsonProperty("state"), Required]
         [MaxLength(2), MinLength(2)]
         public string State { get; set; }
         [JsonProperty("country")]

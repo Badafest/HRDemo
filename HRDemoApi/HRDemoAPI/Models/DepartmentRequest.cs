@@ -1,12 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace HRDemoApp.Models
 {
     public class DepartmentRequest
     {
-        [JsonProperty("name")]
+        [JsonProperty("name"), Required]
         public string Name { get; set; }
-        [JsonProperty("description")]
+        [JsonProperty("description"), Required]
         public string Description { get; set; }
         [JsonProperty("managerId")]
         public int ManagerID { get; set; }
