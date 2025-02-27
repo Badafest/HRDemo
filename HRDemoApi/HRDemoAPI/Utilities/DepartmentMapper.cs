@@ -35,7 +35,7 @@ namespace HRDemoApp.Utilities
         public static Department MapPostRequest(this DepartmentRequest departmentRequest)
         {
             Department department = MapRequest(departmentRequest);
-            if (department.ManagerID == default)
+            if (department.ManagerID == 0)
             {
                 department.ManagerID = null;
             }
@@ -45,7 +45,7 @@ namespace HRDemoApp.Utilities
         public static Department MapPutRequest(this DepartmentRequest departmentRequest, int departmentId)
         {
             Department department = MapRequest(departmentRequest);
-            if (department.ManagerID == default)
+            if (department.ManagerID == 0)
             {
                 department.ManagerID = null;
             }
@@ -59,6 +59,7 @@ namespace HRDemoApp.Utilities
             {
                 Name = departmentRequest.Name,
                 Description = departmentRequest.Description,
+                ManagerID = departmentRequest.ManagerID
             };
         }
     }
