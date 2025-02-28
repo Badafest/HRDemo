@@ -1,9 +1,9 @@
 ﻿using HRDemoAPI.Data;
-using HRDemoApp.Models;
+using HRDemoAPI.Models;
 using System;
 using System.Configuration;
 
-namespace HRDemoApp.Utilities
+namespace HRDemoAPI.Utilities
 {
     public static class AttendanceMapper
     {

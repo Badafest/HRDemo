@@ -2,7 +2,7 @@
 using System.Web.Http.ModelBinding;
 
 
-namespace HRDemoApp.Filters
+namespace HRDemoAPI.Filters
 {
     public class NullToEmptyStringModelBinder : IModelBinder
     {

@@ -121,7 +121,7 @@
       <Name>HRDemoAPI.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\HRDemoAPI\HRDemoAPI.csproj">
-      <Project>{ACE34631-767D-4A98-8D30-81EEB1F1B902}</Project>
+      <Project>{ace34631-767d-4a98-8d30-81eeb1f1b902}</Project>
       <Name>HRDemoAPI</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace HRDemoApp.Models
+namespace HRDemoAPI.Models
 {
     public class DepartmentRequest
     {

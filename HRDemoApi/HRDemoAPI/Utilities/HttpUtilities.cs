@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 
-namespace HRDemoApp.Utilities
+namespace HRDemoAPI.Utilities
 {
     public static class HttpUtilities
     {

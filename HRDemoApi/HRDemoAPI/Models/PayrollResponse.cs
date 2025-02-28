@@ -1,7 +1,7 @@
 ﻿using HRDemoAPI.Data;
 using Newtonsoft.Json;
 
-namespace HRDemoApp.Models
+namespace HRDemoAPI.Models
 {
     public class PayrollResponse
     {

@@ -1,7 +1,7 @@
 ﻿using HRDemoAPI.Data;
-using HRDemoApp.Models;
+using HRDemoAPI.Models;
 
-namespace HRDemoApp.Utilities
+namespace HRDemoAPI.Utilities
 {
     public static class PayrollMapper
     {

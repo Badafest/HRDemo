@@ -1,7 +1,7 @@
 ﻿using HRDemoAPI.Data;
 using HRDemoAPI.Filters;
-using HRDemoApp.Models;
-using HRDemoApp.Utilities;
+using HRDemoAPI.Models;
+using HRDemoAPI.Utilities;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -22,8 +22,8 @@ namespace HRDemoAPI.Controllers
         public IEnumerable<EmployeePublicResponse> Get(int count = default, int page = default, string firstName = default, string lastName = default, string jobTitle = default, string phone = default, string email = default)
         {
             return _hRDemoAPIDb.Employees
-                .Where(e => e.FirstName.Contains(firstName))
-                .Where(e => e.LastName.Contains(lastName))
+                .Where(e => string.IsNullOrEmpty(firstName) || e.FirstName.Contains(firstName))
+                .Where(e => string.IsNullOrEmpty(lastName) ||  e.LastName.Contains(lastName))
                 .Where(e => string.IsNullOrEmpty(jobTitle) || (e.JobTitle == jobTitle))
                 .Where(e => string.IsNullOrEmpty(phone) || e.Phone == phone)
                 .Where(e => string.IsNullOrEmpty(email) || e.Email == email)

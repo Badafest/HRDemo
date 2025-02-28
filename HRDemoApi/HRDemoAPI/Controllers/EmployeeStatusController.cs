@@ -1,6 +1,6 @@
 ﻿using HRDemoAPI.Data;
 using HRDemoAPI.Filters;
-using HRDemoApp.Utilities;
+using HRDemoAPI.Utilities;
 using System.Net.Http;
 using System.Web.Http;
 

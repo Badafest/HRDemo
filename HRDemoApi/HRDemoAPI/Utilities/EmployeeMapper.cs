@@ -1,8 +1,8 @@
 ﻿using HRDemoAPI.Data;
-using HRDemoApp.Models;
+using HRDemoAPI.Models;
 using System;
 
-namespace HRDemoApp.Utilities
+namespace HRDemoAPI.Utilities
 {
     public static class EmployeeMapper
     {

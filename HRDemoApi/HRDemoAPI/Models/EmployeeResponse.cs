@@ -1,6 +1,6 @@
 ﻿using HRDemoAPI.Data;
 
-namespace HRDemoApp.Models
+namespace HRDemoAPI.Models
 {
     public class EmployeeResponse: EmployeePublicResponse
     {

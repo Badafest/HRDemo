@@ -1,7 +1,7 @@
 ﻿using HRDemoAPI.Data;
 using HRDemoAPI.Filters;
-using HRDemoApp.Models;
-using HRDemoApp.Utilities;
+using HRDemoAPI.Models;
+using HRDemoAPI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

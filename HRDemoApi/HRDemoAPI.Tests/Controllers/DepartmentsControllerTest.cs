@@ -1,6 +1,6 @@
 ﻿using HRDemoAPI.Controllers;
 using HRDemoAPI.Data;
-using HRDemoApp.Models;
+using HRDemoAPI.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System.Collections.Generic;

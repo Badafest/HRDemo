@@ -1,12 +1,12 @@
 ﻿using HRDemoAPI.Filters;
-using HRDemoApp.Utilities;
+using HRDemoAPI.Utilities;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Http;
 
-namespace HRDemoApp.Controllers
+namespace HRDemoAPI.Controllers
 {
     [HRDemoAuthorize]
     public class UserController : ApiController

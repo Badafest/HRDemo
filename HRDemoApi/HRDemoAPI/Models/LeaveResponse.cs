@@ -1,7 +1,7 @@
 ﻿using HRDemoAPI.Data;
 using System;
 
-namespace HRDemoApp.Models
+namespace HRDemoAPI.Models
 {
     public class LeaveResponse
     {
