@@ -1,5 +1,4 @@
 ﻿using HRDemoAPI.Filters;
-using HRDemoAPI.Filters;
 using Newtonsoft.Json.Converters;
 using System.Web.Http;
 
@@ -20,7 +19,7 @@ namespace HRDemoAPI
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }
