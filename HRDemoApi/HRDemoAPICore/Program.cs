@@ -12,8 +12,9 @@ using static HRDemoAPICore.Filters.NullToEmptyStringModelBinder;
 var builder = WebApplication.CreateBuilder(args);
 HttpUtilities.Configuration = builder.Configuration;
 
-builder.Services.AddSystemWebAdapters();
-builder.Services.AddHttpForwarder();
+// these are no longer required as the migration is completed
+// builder.Services.AddSystemWebAdapters();
+// builder.Services.AddHttpForwarder();
 
 // Add services to the container.
 builder.Services.AddDbContext<HRDemoApiContext>(options => {
@@ -100,15 +101,16 @@ app.UseSwaggerUI(options =>
     options.OAuthClientId(builder.Configuration["AzureAd:ClientId"]);
     options.OAuthUsePkce(); // Use PKCE for security
 });
-app.UseHttpsRedirection();
+
+// app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseSystemWebAdapters();
+// app.UseSystemWebAdapters();
 
 app.MapControllers();
-app.MapForwarder("/{**catch-all}", app.Configuration["ProxyTo"] ?? "").Add(static builder => ((RouteEndpointBuilder)builder).Order = int.MaxValue);
+// app.MapForwarder("/{**catch-all}", app.Configuration["ProxyTo"] ?? "").Add(static builder => ((RouteEndpointBuilder)builder).Order = int.MaxValue);
 
 app.Run();
