@@ -116,7 +116,7 @@ namespace HRDemoAPI.Controllers
         // DELETE api/Departments/5
         public HttpResponseMessage Delete(int id)
         {
-            var validatedResponse = HttpUtilities.ValidateManagerRole(id);
+            var validatedResponse = HttpUtilities.ValidateAdminRole();
             if (validatedResponse != null)
             {
                 return validatedResponse;

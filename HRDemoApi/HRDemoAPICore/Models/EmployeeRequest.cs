@@ -28,7 +28,7 @@ namespace HRDemoAPICore.Models
     {
         [JsonProperty("line1"), Required]
         public string? Line1 { get; set; }
-        [JsonProperty("line2"), Required]
+        [JsonProperty("line2")]
         public string? Line2 { get; set; }
         [JsonProperty("city"), Required]
         public string? City { get; set; }

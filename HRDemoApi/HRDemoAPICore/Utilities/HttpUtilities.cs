@@ -1,6 +1,7 @@
 ﻿using HRDemoAPI.DataCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Security.Claims;
 
 namespace HRDemoAPICore.Utilities
 {
@@ -35,6 +36,22 @@ namespace HRDemoAPICore.Utilities
             return filterQuery.Skip((page - 1) * count).Take(count);
         }
 
+        public static ISet<int> GetManagedDepartments(HttpContext context)
+        {
+            if (ValidateAdminRole(context) == null)
+            {
+                return new HashSet<int>();
+            }
+            var managedDepartments = context.User.Claims
+                .Where(claim => claim.Type == ClaimTypes.Role)
+                .Select(claim => int.Parse(claim.Value.Substring(8)))
+                .ToHashSet();
+            if (managedDepartments.Count == 0)
+            {
+                managedDepartments.Add(0);
+            }
+            return managedDepartments;
+        }
         public static ObjectResult? ValidateAdminRole(HttpContext context)
         {
             if (context.User.IsInRole(UserRole.Admin.ToString()))

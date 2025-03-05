@@ -22,6 +22,8 @@ namespace HRDemoAPI.Controllers
         // GET api/leaves
         public IEnumerable<LeaveResponse> Get(int count = default, int page = default, int employeeId = 0, LeaveType? type = null, string startDate = null, string endDate = null)
         {
+            var managedDepartments = HttpUtilities.GetManagedDepartments();
+
             var isStartDateParsed = DateTimeOffset.TryParse(startDate, out var startDateTime);
             var isEndDateParsed = DateTimeOffset.TryParse(endDate, out var endDateTime);
 
@@ -30,9 +32,10 @@ namespace HRDemoAPI.Controllers
                 .Where(l => !isStartDateParsed || l.StartDate >= startDateTime)
                 .Where(l => !isEndDateParsed || l.EndDate <= endDateTime)
                 .Where(l => type == null || l.Type == type)
+                .Include("Employee")
+                .Where(l => managedDepartments.Count == 0 || (l.Employee != null && l.Employee.DepartmentID != null && managedDepartments.Contains((int)l.Employee.DepartmentID)))
                 .OrderBy(a => a.LeaveID)
                 .Paginate(count, page)
-                .Include("Employee")
                 .AsNoTracking()
                 .ToList()
                 .Select(a => a.MapQueryResult());
@@ -41,9 +44,12 @@ namespace HRDemoAPI.Controllers
         // GET api/leaves/5
         public HttpResponseMessage Get(int id)
         {
+            var managedDepartments = HttpUtilities.GetManagedDepartments();
+
             LeaveResponse leave = _hRDemoAPIDb.Leaves
                 .Where(e => e.LeaveID == id)
                 .Include("Employee")
+                .Where(l => managedDepartments.Count == 0 || (l.Employee != null && l.Employee.DepartmentID != null && managedDepartments.Contains((int)l.Employee.DepartmentID)))
                 .AsNoTracking()
                 .ToList()
                 .Select(e => e.MapQueryResult())

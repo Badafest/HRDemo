@@ -21,13 +21,16 @@ namespace HRDemoAPI.Controllers
         // GET api/payrolls
         public IEnumerable<PayrollResponse> Get(int count = default, int page = default, int employee = default, int month = default, int year = default)
         {
+            var managedDepartments = HttpUtilities.GetManagedDepartments();
+
             return _hRDemoAPIDb.Payrolls
                 .Where(p => employee == default || employee == p.EmployeeID)
                 .Where(p => month == default || month == p.Month)
                 .Where(p => year == default || year == p.Year)
+                .Include("Employee")
+                .Where(p => managedDepartments.Count == 0 || (p.Employee != null && p.Employee.DepartmentID != null && managedDepartments.Contains((int)p.Employee.DepartmentID)))
                 .OrderBy(p => p.PayrollID)
                 .Paginate(count, page)
-                .Include("Employee")
                 .AsNoTracking()
                 .ToList()
                 .Select(p => p.MapQueryResult());
@@ -36,9 +39,12 @@ namespace HRDemoAPI.Controllers
         // GET api/payrolls/5
         public HttpResponseMessage Get(int id)
         {
+            var managedDepartments = HttpUtilities.GetManagedDepartments();
+
             PayrollResponse payroll = _hRDemoAPIDb.Payrolls
                 .Where(p => p.PayrollID == id)
                 .Include("Employee")
+                .Where(p => managedDepartments.Count == 0 || (p.Employee != null && p.Employee.DepartmentID != null && managedDepartments.Contains((int)p.Employee.DepartmentID)))
                 .AsNoTracking()
                 .ToList()
                 .Select(p => p.MapQueryResult())

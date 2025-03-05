@@ -24,14 +24,17 @@ namespace HRDemoAPI.Controllers
         {
             var isStartDateParsed = DateTimeOffset.TryParse(startDate, out var startDateTime);
             var isEndDateParsed = DateTimeOffset.TryParse(endDate, out var endDateTime);
+            
+            var managedDepartments = HttpUtilities.GetManagedDepartments();
 
             return _hRDemoAPIDb.Attendances
                 .Where(a => employeeId == default || (a.EmployeeID == employeeId))
                 .Where(a => !isStartDateParsed || a.Date >= startDateTime)
                 .Where(a => !isEndDateParsed || a.Date <= endDateTime)
+                .Include("Employee")
+                .Where(a => managedDepartments.Count == 0 || (a.Employee != null && a.Employee.DepartmentID != null && managedDepartments.Contains((int)a.Employee.DepartmentID)))
                 .OrderBy(a => a.AttendanceID)
                 .Paginate(count, page)
-                .Include("Employee")
                 .AsNoTracking()
                 .ToList()
                 .Select(a => a.MapQueryResult());
@@ -40,9 +43,12 @@ namespace HRDemoAPI.Controllers
         // GET api/attendances/5
         public HttpResponseMessage Get(int id)
         {
+            var managedDepartments = HttpUtilities.GetManagedDepartments();
+
             AttendanceResponse attendance = _hRDemoAPIDb.Attendances
                 .Where(e => e.AttendanceID == id)
                 .Include("Employee")
+                .Where(a => managedDepartments.Count == 0 || (a.Employee != null && a.Employee.DepartmentID != null && managedDepartments.Contains((int)a.Employee.DepartmentID)))
                 .AsNoTracking()
                 .ToList()
                 .Select(e => e.MapQueryResult())

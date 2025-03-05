@@ -123,7 +123,7 @@ namespace HRDemoAPICore.Controllers
         // DELETE api/Departments/5
         public ObjectResult Delete(int id)
         {
-            var validatedResponse = HttpUtilities.ValidateManagerRole(HttpContext, id);
+            var validatedResponse = HttpUtilities.ValidateAdminRole(HttpContext);
             if (validatedResponse != null)
             {
                 return validatedResponse;

@@ -1,13 +1,14 @@
 ﻿using HRDemoAPI.DataCore.Models;
 using HRDemoAPICore.Models;
+using Newtonsoft.Json;
 
 namespace HRDemoAPICore.Utilities
 {
     public static class EmployeeMapper
     {
-        public static EmployeePublicResponse MapQueryResult(this Employee employee)
+        public static EmployeePublicResponse MapQueryResult(this Employee employee, bool isPublic = true)
         {
-            return new EmployeePublicResponse
+            var publicResponse = new EmployeePublicResponse
             {
                 EmployeeID = employee.EmployeeID,
                 FirstName = employee.FirstName,
@@ -27,6 +28,15 @@ namespace HRDemoAPICore.Utilities
                 },
                 Department = employee.Department?.MapQueryResult()
             };
+
+            if (isPublic)
+            {
+                return publicResponse;
+            }
+
+            var employeeResponse = JsonConvert.DeserializeObject<EmployeeResponse>(JsonConvert.SerializeObject(publicResponse));
+            employeeResponse.Salary = employee.Salary;
+            return employeeResponse;
         }
         public static Employee MapPostRequest(this EmployeeRequest employeeRequest)
         {
@@ -65,7 +75,7 @@ namespace HRDemoAPICore.Utilities
                 Address = new EmployeeAddress()
                 {
                     Line1 = employeeRequest.Address?.Line1,
-                    Line2 = employeeRequest.Address?.Line2,
+                    Line2 = employeeRequest.Address?.Line2 ?? "",
                     City = employeeRequest.Address?.City,
                     State = employeeRequest.Address?.State,
                     PostalCode = employeeRequest.Address?.PostalCode,

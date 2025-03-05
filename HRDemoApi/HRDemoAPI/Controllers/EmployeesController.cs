@@ -36,18 +36,26 @@ namespace HRDemoAPI.Controllers
         }
 
         // GET api/employees/5
-        public HttpResponseMessage Get(int id)
+        public HttpResponseMessage Get(int id, bool salary = false)
         {
             EmployeePublicResponse employee = _hRDemoAPIDb.Employees
                 .Where(e => e.EmployeeID == id)
                 .Include("Department.Manager")
                 .AsNoTracking()
                 .ToList()
-                .Select(e => e.MapQueryResult())
+                .Select(e => e.MapQueryResult(!salary))
                 .FirstOrDefault();
             if (employee == null || employee.EmployeeID != id)
             {
                 return HttpUtilities.CreateResponseMessage(null, System.Net.HttpStatusCode.NotFound);
+            }
+            if (salary)
+            {
+                var validatedResponse = HttpUtilities.ValidateManagerRole(employee.Department.DepartmentID);
+                if (validatedResponse != null)
+                {
+                    return validatedResponse;
+                }
             }
             return employee.CreateResponseMessage();
         }

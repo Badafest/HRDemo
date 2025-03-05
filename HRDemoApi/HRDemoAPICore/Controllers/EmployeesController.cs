@@ -35,18 +35,26 @@ namespace HRDemoAPICore.Controllers
         [HttpGet("{id}")]
 
         // GET api/employees/5
-        public ObjectResult Get(int id)
+        public ObjectResult Get(int id, bool salary = false)
         {
             EmployeePublicResponse? employee = _hRDemoAPIDb.Employees
                 .Where(e => e.EmployeeID == id)
                 .Include("Department.Manager")
                 .AsNoTracking()
                 .ToList()
-                .Select(e => e.MapQueryResult())
+                .Select(e => e.MapQueryResult(!salary))
                 .FirstOrDefault();
             if (employee == null || employee.EmployeeID != id)
             {
                 return HttpUtilities.CreateResponseMessage(null, System.Net.HttpStatusCode.NotFound);
+            }
+            if (salary)
+            {
+                var validatedResponse = HttpUtilities.ValidateManagerRole(HttpContext, employee.Department?.DepartmentID ?? 0);
+                if (validatedResponse != null)
+                {
+                    return validatedResponse;
+                }
             }
             return employee.CreateResponseMessage();
         }

@@ -1,10 +1,12 @@
 ﻿using HRDemoAPI.Data;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Http;
 
@@ -48,6 +50,24 @@ namespace HRDemoAPI.Utilities
             HttpContext.Current?.Response?.Headers?.Add("X-Total-Pages", Math.Floor((double)totalCount/count + 1).ToString());
             HttpContext.Current?.Response?.Headers?.Add("X-Current-Page", page.ToString());
             return filterQuery.Skip(((page) - 1) * count).Take(count);
+        }
+
+        public static ISet<int> GetManagedDepartments()
+        {
+            var user = HttpContext.Current.User as ClaimsIdentity;
+            if (ValidateAdminRole() == null)
+            {
+                return new HashSet<int>();
+            }
+            var managedDepartments = user.Claims
+                .Where(claim => claim.Type == ClaimTypes.Role)
+                .Select(claim => int.Parse(claim.Value.Substring(8)))
+                .ToHashSet();
+            if (managedDepartments.Count == 0)
+            {
+                managedDepartments.Add(0);
+            }
+            return managedDepartments;
         }
 
         public static HttpResponseMessage ValidateAdminRole()
