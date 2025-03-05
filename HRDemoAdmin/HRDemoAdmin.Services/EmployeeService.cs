@@ -13,9 +13,9 @@ namespace HRDemoAdmin.Services
         {
             return Get<IEnumerable<EmployeeResponse>>($"/employees?firstName={firstName}&lastName={lastName}&jobTitle={jobTitle}&phone={phone}&email={email}");
         }
-        public ApiResponse<EmployeeResponse> GetEmployeeDetails(int id)
+        public ApiResponse<EmployeeResponse> GetEmployeeDetails(int id, bool salary = false)
         {
-            return Get<EmployeeResponse>($"/employees/{id}");
+            return Get<EmployeeResponse>($"/employees/{id}?salary={salary}");
         }
         public ApiResponse<EmployeeResponse> DeleteEmployee(int id)
         {
@@ -27,7 +27,7 @@ namespace HRDemoAdmin.Services
         }
         public ApiResponse<EmployeeResponse> EditEmployee(int id, EmployeeRequest employeeRequest)
         {
-            return Put<EmployeeResponse>($"/employees{id}", employeeRequest);
+            return Put<EmployeeResponse>($"/employees/{id}", employeeRequest);
         }
 
         public ApiResponse<EmployeeResponse> EmployeeStatus(int id, bool hire = true)

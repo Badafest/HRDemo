@@ -22,7 +22,7 @@ namespace HRDemoAdmin.Controllers
         // GET: Employees/{id}
         public ActionResult Details(int id)
         {
-            var response = _employeeService.GetEmployeeDetails(id);
+            var response = _employeeService.GetEmployeeDetails(id, true);
             return HandleApiResponse(response, response.Data) ?? View(response.Data);
         }
 
@@ -57,7 +57,7 @@ namespace HRDemoAdmin.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var response = _employeeService.GetEmployeeDetails(id);
+            var response = _employeeService.GetEmployeeDetails(id, true);
             return HandleApiResponse(response, response.Data) ?? View(response.Data);
         }
 
@@ -84,6 +84,7 @@ namespace HRDemoAdmin.Controllers
                 email = employeeResponse.Email,
                 phone = employeeResponse.Phone,
                 jobTitle = employeeResponse.JobTitle,
+                salary = employeeResponse.Salary,
                 address = new EmployeeRequestAddress
                 {
                     line1 = employeeResponse.Address.Line1,
@@ -94,7 +95,6 @@ namespace HRDemoAdmin.Controllers
                     country = employeeResponse.Address.Country,
                 },
                 departmentId = departmentId,
-
             };
             var response = _employeeService.EditEmployee(id, request);
             return HandleApiResponse(response, employeeResponse) ?? RedirectToAction("Details", new { id });

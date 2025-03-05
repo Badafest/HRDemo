@@ -67,19 +67,58 @@
         </div>
     </div>
 
-    <div class="form-group mb-2 col-md-8">
-        @Html.LabelFor(model => model.address.line1, htmlAttributes: new { @class = "control-label" })
-        <div>
-            @Html.EditorFor(model => model.address.line1, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.address.line1, "", new { @class = "text-danger" })
+    @Html.LabelFor(model => model.address, htmlAttributes: new { @class = "control-label" })
+    <div class="m-2">
+        <div class="form-group mb-2 col-md-8">
+            @Html.LabelFor(model => model.address.line1, htmlAttributes: new { @class = "control-label" })
+            <div>
+                @Html.EditorFor(model => model.address.line1, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.address.line1, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group mb-2 col-md-8">
-        @Html.LabelFor(model => model.address.line2, htmlAttributes: new { @class = "control-label" })
-        <div>
-            @Html.EditorFor(model => model.address.line2, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.address.line2, "", new { @class = "text-danger" })
+        <div class="form-group mb-2 col-md-8">
+            @Html.LabelFor(model => model.address.line2, htmlAttributes: new { @class = "control-label" })
+            <div>
+                @Html.EditorFor(model => model.address.line2, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.address.line2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row g-2 mb-2">
+            <div class="form-group mb-2 col-md-3">
+                @Html.LabelFor(model => model.address.postalCode, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.address.postalCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.address.postalCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-2 col-md-5">
+                @Html.LabelFor(model => model.address.city, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.address.city, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.address.city, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-2 mb-2">
+            <div class="form-group mb-2 col-md-3">
+                @Html.LabelFor(model => model.address.state, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.address.state, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.address.state, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mb-2 col-md-5">
+                @Html.LabelFor(model => model.address.country, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.address.country, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.address.country, "", new { @class = "text-danger" })
+                </div>
+            </div>
         </div>
     </div>
 

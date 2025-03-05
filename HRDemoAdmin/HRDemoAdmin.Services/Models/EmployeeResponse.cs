@@ -1,17 +1,24 @@
-﻿namespace HRDemoAdmin.Services.Models
+﻿using System.ComponentModel;
+
+namespace HRDemoAdmin.Services.Models
 {
     public class EmployeeResponse: ManagerResponse
     {
         public int EmployeeID { get; set; }
+        [DisplayName("Annual Salary (USD)")]
+        public double Salary { get; set; }
         public DepartmentResponse Department { get; set; }
     }
 
     public class ManagerResponse
     {
+        [DisplayName("First Name")]
         public string FirstName { get; set; }
+        [DisplayName("Last Name")]
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        [DisplayName("Job Title")]
         public string JobTitle { get; set; }
         public string Status { get; set; }
         public EmployeeResponseAddress Address { get; set; }

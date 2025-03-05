@@ -25,8 +25,7 @@ namespace HRDemoAdmin.Controllers
                     var parsedState = modelState.ToObject<IDictionary<string, string[]>>();
                     foreach (var error in parsedState)
                     {
-                        var nestedKeys = error.Key.Split(new char[] { '.' });
-                        ModelState.AddModelError(nestedKeys[nestedKeys.Length - 1], string.Join(", ", error.Value));
+                        ModelState.AddModelError(error.Key.Substring(error.Key.IndexOf('.') + 1), string.Join(", ", error.Value));
                     }
                     return View(model);
                 }

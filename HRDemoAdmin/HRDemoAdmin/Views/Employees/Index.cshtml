@@ -44,14 +44,14 @@
         grid.Column("EmployeeID", "ID", style: "column-small", canSort: true),
         grid.Column("Name", format: item => new HtmlString($"<a href='./Employees/Details/{item.EmployeeId}'>{item.FirstName} {item.LastName}</a>"), style: "column-medium", canSort: true),
         grid.Column("JobTitle", "Job Title", style: "column-medium", canSort: false),
-        grid.Column(header: "Department", format: item => new HtmlString($"<a href='/Departments/Details/{item.Department.DepartmentID}'>{item.Department.Name}</a>"), style: "column-medium", canSort: false),
+        grid.Column(header: "Department", format: item => item.Department == null ? new HtmlString("<span>-</span>") : new HtmlString($"<a href='/Departments/Details/{item.Department.DepartmentID}'>{item.Department.Name}</a>"), style: "column-medium", canSort: false),
         grid.Column("Email", "Email", style: "column-medium", canSort: false),
         grid.Column("Phone", "Phone Number", style: "column-medium", canSort: false),
         grid.Column("Address", format: item => new HtmlString($"<address>" +
-        $"<div>{item.Address.Line1}</div>" +
-        $"<div>{item.Address.Line2}</div>" +
-        $"<div>{item.Address.PostalCode}, {item.Address.City}, {item.Address.State}, {item.Address.Country}</div>" +
-        $"</address>"), style: "column-medium", canSort: false)
+            $"<div>{item.Address.Line1}</div>" +
+            $"<div>{item.Address.Line2}</div>" +
+            $"<div>{item.Address.PostalCode}, {item.Address.City}, {item.Address.State}, {item.Address.Country}</div>" +
+            $"</address>"), style: "column-medium", canSort: false)
     ),
     footerStyle: "hidden"
 )
