@@ -30,6 +30,7 @@
 
         <dd>
             @Html.DisplayFor(model => model.Status)
+            <button id="changeStatusBtn" class="btn btn-sm @Html.Raw(Model.Status == "Active" ? "btn-danger" : "btn-success")" data-status="@Model.Status">@(Model.Status == "Active" ? "Terminate" : "Activate")</button>
         </dd>
 
         <dt>
@@ -90,3 +91,22 @@
     @Html.ActionLink("Delete", "Delete", new { id = Model.EmployeeID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<script>
+    $(document).ready(function () {
+        $("#changeStatusBtn").click(function () {
+            $.ajax({
+                url: `/Employees/EmployeeStatus/${@Model.EmployeeID}?hire=${$(this).data("status")!="Active"}`,
+                type: "POST",
+                success: function (response) {
+                    // Handle success response
+                    window.location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    console.error("Error: " + error);
+                }
+            });
+        });
+    });
+</script>

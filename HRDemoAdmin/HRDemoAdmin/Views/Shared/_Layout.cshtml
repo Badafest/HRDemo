@@ -28,14 +28,17 @@
     </nav>
 
     <div class="container body-content">
-        <div class="row">
-            <div class="col-11"></div>
-            <div class="col-1">
+        <div class="d-flex justify-content-between align-content-end">
+            <div>
+                <p class="m-0">@DateTime.Now.ToString("MMMM dd, yyyy")</p>
+                <p class="m-0">@DateTime.Now.ToString("dddd")</p>
+            </div>
+            <div>
                 <p class="m-0">@ViewBag.UserName</p>
                 <span class="badge small bg-success">@ViewBag.UserRole</span>
             </div>
         </div>
-        <div class="container mt-4">
+        <div class="container mt-4 px-0">
             @RenderBody()
         </div>
         <hr />

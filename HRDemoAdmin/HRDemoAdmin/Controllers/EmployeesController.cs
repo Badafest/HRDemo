@@ -115,5 +115,13 @@ namespace HRDemoAdmin.Controllers
             var response = _employeeService.DeleteEmployee(id);
             return HandleApiResponse(response, response.Data) ?? RedirectToAction("Index");
         }
+
+        // POST: Employees/EmployeeStatus/{id}
+        [HttpPost]
+        public ActionResult EmployeeStatus(int id, bool hire = true) 
+        {
+            var response = _employeeService.EmployeeStatus(id, hire);
+            return HandleApiResponse(response, response.Data) ?? new JsonResult() { Data = response };
+        }
     }
 }
