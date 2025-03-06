@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HRDemoAdmin.Services
 {
@@ -16,6 +18,7 @@ namespace HRDemoAdmin.Services
     public class ApiResponse<T>: IApiResponse
     {
         public T Data { get; set; }
+        public IDictionary<string, string> Headers { get; set; }
         public bool Success { get; set; }
         public JObject ErrorResponse { get; set; }
     }
@@ -68,17 +71,25 @@ namespace HRDemoAdmin.Services
                 }; 
                 HttpResponseMessage response =  Task.Run(() => client.SendAsync(request)).Result;
                 string json = Task.Run(() => response.Content.ReadAsStringAsync()).Result;
-                var apiResponse = new ApiResponse<T>() 
-                { 
-                    Success = response.IsSuccessStatusCode
+
+                var headersDictionary = new Dictionary<string, string>();
+                foreach (var header in response.Headers)
+                {
+                    headersDictionary.Add(header.Key, header.Value.FirstOrDefault());
+                }
+                var apiResponse = new ApiResponse<T>
+                {
+                    Success = response.IsSuccessStatusCode,
+                    Headers = headersDictionary
                 };
                 if (apiResponse.Success)
                 {
                     apiResponse.Data = JsonConvert.DeserializeObject<T>(json);
-                } 
+                }
                 else
                 {
                     apiResponse.ErrorResponse = JsonConvert.DeserializeObject<JObject>(json);
+                    apiResponse.ErrorResponse.Add("StatusCode", JToken.FromObject(response.StatusCode));
                 }
                 return apiResponse;
             }
