@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace HRDemoReportService.Data
 {
@@ -13,10 +15,62 @@ namespace HRDemoReportService.Data
             _commandTimeout = commandTimeout;
             _connectionString = connectionString;
         }
-
+        public UserResponse GetUserDetails(string username)
+        {
+            var response = new UserResponse();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = @"
+                        SELECT
+                            Users.UserID,
+                            Users.EmployeeID, 
+                            Users.Role as UserRole,
+                            CONCAT(Employees.FirstName, ' ', Employees.LastName) as EmployeeName,
+                            Departments.DepartmentID,
+                            Departments.Name as DepartmentName,
+	                        Departments.ManagerID
+                        FROM Users
+                        JOIN Employees ON Employees.EmployeeID = Users.EmployeeID
+                        JOIN Departments ON Departments.ManagerID = Users.EmployeeID OR Users.Role = 1
+                        WHERE Users.Name = @username";
+                    command.Parameters.Add(new SqlParameter("@username", SqlDbType.NVarChar) { Value = username });
+                    command.CommandTimeout = _commandTimeout;
+                    using (var reader = command.ExecuteReader())
+                    {
+                        var managedDepartments = new List<DepartmentResponse>();
+                        int rowCount = 0;
+                        while (reader.Read())
+                        {
+                            if (rowCount == 0)
+                            {
+                                response.UserID = reader.GetInt32(0);
+                                response.EmployeeID = reader.GetInt32(1);
+                                response.UserRole = reader.GetInt16(2);
+                                response.EmployeeName = reader.GetString(3);
+                            }
+                            managedDepartments.Add(new DepartmentResponse
+                            {
+                                DepartmentID = reader.GetInt32(4),
+                                DepartmentName = reader.GetString(5)
+                            });
+                            rowCount++;
+                        }
+                        response.ManagedDepartments = managedDepartments.ToArray();
+                    }
+                }
+            }
+            return response;
+        }
         public ReportResponse GetReportData(ReportRequest request)
         {
             var response = new ReportResponse();
+
+            response.EmployeeReport.WorkingDaysInMonth = ComputeWorkingDaysInMonth(request.Year, request.Month);
+            response.EmployeeReport.WorkingDaysInYear = ComputeWorkingDaysInYear(request.Year);
+
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
@@ -52,6 +106,7 @@ namespace HRDemoReportService.Data
                         }
                     }
                 }
+                response.EmployeeReport.MonthSalary = Math.Round(response.EmployeeReport.WorkingDaysInMonth*(response.EmployeeReport.AnnualSalary / response.EmployeeReport.WorkingDaysInYear), 2);
 
                 // payrolls
                 using (var query = connection.CreateCommand())
@@ -63,10 +118,9 @@ namespace HRDemoReportService.Data
                     query.CommandTimeout = _commandTimeout;
                     using (var reader = query.ExecuteReader())
                     {
-                        var payrolls = new List<PayrollReport>();
                         while (reader.Read())
                         {
-                            payrolls.Add(new PayrollReport
+                            response.PayrollReports.Append(new PayrollReport
                             {
                                 PayrollID = reader.GetInt32(0),
                                 Month = reader.GetInt16(1),
@@ -78,11 +132,85 @@ namespace HRDemoReportService.Data
                                 NetAmount = reader.GetDouble(7),
                             });
                         }
-                        response.PayrollReports = payrolls.ToArray();
                     }
                 }
             }
             return response;
         }
+        public EmployeeResponse[] GetEmployeeOptions(EmployeeRequest request)
+        {
+            var response = new EmployeeResponse[] { };
+            using(var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = @"
+                        SELECT TOP 5
+	                        EmployeeID,
+	                        CONCAT(FirstName, ' ', LastName, ' (', Email, ')') as EmployeeName
+                        FROM Employees
+                        WHERE 
+                            DepartmentID IN (SELECT VALUE FROM string_split(@departmentIds, ','))
+                            AND 
+                            (@searchString = '' OR (FirstName LIKE '%' + @searchString + '%' OR LastName LIKE '%' + @searchString + '%'));";
+                    
+                    command.Parameters.Add(new SqlParameter("@searchString", SqlDbType.NVarChar) { Value = request.SearchName });
+                    command.Parameters.Add(new SqlParameter("@departmentIds", SqlDbType.NVarChar) { Value = string.Join(",", request.ManagedDepartments) });
+                    command.CommandTimeout = _commandTimeout;
+                    using (var reader = command.ExecuteReader())
+                    {
+                        var employeeOptions = new List<EmployeeResponse>();
+                        while (reader.Read())
+                        {
+                            employeeOptions.Add(new EmployeeResponse
+                            {
+                                EmployeeID = reader.GetInt32(0),
+                                EmployeeName = reader.GetString(1)
+                            });
+                        }
+                        response = employeeOptions.ToArray();
+                    }
+                }
+            }
+            return response;
+        }
+        private static int ComputeWorkingDaysInMonth(short year, short month)
+        {
+            // Get the total number of days in the month
+            int totalDaysInMonth = DateTime.DaysInMonth(year, month);
+
+            // Get the day of the week for the first day of the month (0 = Sunday, ..., 6 = Saturday)
+            int firstDayOfWeek = (int)new DateTime(year, month, 1).DayOfWeek;
+
+            return ComputeWorkingDays(totalDaysInMonth, firstDayOfWeek); 
+        }
+        private static int ComputeWorkingDaysInYear(short year)
+        {
+            // Check if the year is a leap year
+            bool isLeapYear = DateTime.IsLeapYear(year);
+
+            // Total days in the year
+            int totalDaysInYear = isLeapYear ? 366 : 365;
+
+            // Day of the week for January 1 (0 = Sunday, ..., 6 = Saturday)
+            int firstDayOfWeek = (int)new DateTime(year, 1, 1).DayOfWeek;
+
+            return ComputeWorkingDays(totalDaysInYear, firstDayOfWeek);
+        }
+
+        private static int ComputeWorkingDays(int totalDays, int firstDayOfWeek) 
+        {
+            // Calculate total Saturdays
+            int saturdayOffset = (6 - firstDayOfWeek + 7) % 7; // First Saturday
+            int saturdays = (totalDays- saturdayOffset) / 7 + 1;
+
+            // Calculate total Sundays
+            int sundayOffset = (7 - firstDayOfWeek) % 7; // First Sunday
+            int sundays = (totalDays - sundayOffset) / 7 + 1;
+
+            // Return the computed working days
+            return totalDays - saturdays - sundays;
+        } 
     }
 }

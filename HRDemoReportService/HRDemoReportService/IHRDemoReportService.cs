@@ -7,6 +7,10 @@ namespace HRDemoReportService
 	public interface IHRDemoReportService
 	{
 		[OperationContract]
-		ReportResponse GetDataUsingDataContract(ReportRequest request);
-	}
+		ReportResponse GetEmployeeMonthlyReport(ReportRequest request);
+		[OperationContract]
+		UserResponse GetUserDetails(UserRequest request);
+		[OperationContract]
+		EmployeeResponse[] GetEmployeeOptions(EmployeeRequest request);
+    }
 }

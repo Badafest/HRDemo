@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="a1ed4f32-ecf4-4fc2-9caf-dd5d60d4e078" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:11214/HRDemoReportService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="HRDemoReportService3.xsd" MetadataType="Schema" ID="92d27518-482a-40cf-8ae2-96241564f0f9" SourceId="1" SourceUrl="http://localhost:11214/HRDemoReportService.svc?xsd=xsd3" />
+    <MetadataFile FileName="HRDemoReportService2.xsd" MetadataType="Schema" ID="39fe86d3-2a0f-4929-9df3-d680f63bf992" SourceId="1" SourceUrl="http://localhost:11214/HRDemoReportService.svc?xsd=xsd2" />
+    <MetadataFile FileName="HRDemoReportService.wsdl" MetadataType="Wsdl" ID="07c585a2-fb99-459f-855a-fd712c3e5f8d" SourceId="1" SourceUrl="http://localhost:11214/HRDemoReportService.svc?wsdl" />
+    <MetadataFile FileName="HRDemoReportService.xsd" MetadataType="Schema" ID="a2399df9-eaf3-4ad4-80fb-ede796f05579" SourceId="1" SourceUrl="http://localhost:11214/HRDemoReportService.svc?xsd=xsd0" />
+    <MetadataFile FileName="HRDemoReportService.disco" MetadataType="Disco" ID="687ba468-13ec-41a1-91e4-a10f65000992" SourceId="1" SourceUrl="http://localhost:11214/HRDemoReportService.svc?disco" />
+    <MetadataFile FileName="HRDemoReportService1.xsd" MetadataType="Schema" ID="1cc55f40-9d92-4c78-8b46-c58020e7698a" SourceId="1" SourceUrl="http://localhost:11214/HRDemoReportService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

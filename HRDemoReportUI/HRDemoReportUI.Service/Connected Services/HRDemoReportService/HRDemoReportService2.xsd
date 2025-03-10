@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:11214/HRDemoReportService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="ReportRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EmployeeID" type="xs:int" />
+      <xs:element minOccurs="0" name="Month" type="xs:short" />
+      <xs:element minOccurs="0" name="TimezoneOffset" type="xs:float" />
+      <xs:element minOccurs="0" name="Year" type="xs:short" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ReportRequest" nillable="true" type="tns:ReportRequest" />
+  <xs:complexType name="ReportResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EmployeeReport" nillable="true" type="tns:EmployeeReport" />
+      <xs:element minOccurs="0" name="PayrollReports" nillable="true" type="tns:ArrayOfPayrollReport" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ReportResponse" nillable="true" type="tns:ReportResponse" />
+  <xs:complexType name="EmployeeReport">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AnnualSalary" type="xs:double" />
+      <xs:element minOccurs="0" name="BereavementLeave" type="xs:int" />
+      <xs:element minOccurs="0" name="CasualLeave" type="xs:int" />
+      <xs:element minOccurs="0" name="Country" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EmployeeID" type="xs:int" />
+      <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LateDays" type="xs:int" />
+      <xs:element minOccurs="0" name="LeaveDays" type="xs:int" />
+      <xs:element minOccurs="0" name="MonthSalary" type="xs:double" />
+      <xs:element minOccurs="0" name="ParentalLeave" type="xs:int" />
+      <xs:element minOccurs="0" name="PresentDays" type="xs:int" />
+      <xs:element minOccurs="0" name="SickLeave" type="xs:int" />
+      <xs:element minOccurs="0" name="State" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UnpaidLeave" type="xs:int" />
+      <xs:element minOccurs="0" name="WorkingDaysInMonth" type="xs:double" />
+      <xs:element minOccurs="0" name="WorkingDaysInYear" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EmployeeReport" nillable="true" type="tns:EmployeeReport" />
+  <xs:complexType name="ArrayOfPayrollReport">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PayrollReport" nillable="true" type="tns:PayrollReport" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPayrollReport" nillable="true" type="tns:ArrayOfPayrollReport" />
+  <xs:complexType name="PayrollReport">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GrossAmount" type="xs:double" />
+      <xs:element minOccurs="0" name="Month" type="xs:short" />
+      <xs:element minOccurs="0" name="NetAmount" type="xs:double" />
+      <xs:element minOccurs="0" name="PayrollID" type="xs:int" />
+      <xs:element minOccurs="0" name="PostTaxDeduction" type="xs:double" />
+      <xs:element minOccurs="0" name="PreTaxDeduction" type="xs:double" />
+      <xs:element minOccurs="0" name="TaxDeduction" type="xs:double" />
+      <xs:element minOccurs="0" name="Year" type="xs:short" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PayrollReport" nillable="true" type="tns:PayrollReport" />
+  <xs:complexType name="UserRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserRequest" nillable="true" type="tns:UserRequest" />
+  <xs:complexType name="UserResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:EmployeeResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ManagedDepartments" nillable="true" type="tns:ArrayOfDepartmentResponse" />
+          <xs:element minOccurs="0" name="UserID" type="xs:int" />
+          <xs:element minOccurs="0" name="UserRole" type="xs:short" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UserResponse" nillable="true" type="tns:UserResponse" />
+  <xs:complexType name="EmployeeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EmployeeID" type="xs:int" />
+      <xs:element minOccurs="0" name="EmployeeName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EmployeeResponse" nillable="true" type="tns:EmployeeResponse" />
+  <xs:complexType name="ArrayOfDepartmentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DepartmentResponse" nillable="true" type="tns:DepartmentResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDepartmentResponse" nillable="true" type="tns:ArrayOfDepartmentResponse" />
+  <xs:complexType name="DepartmentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DepartmentID" type="xs:int" />
+      <xs:element minOccurs="0" name="DepartmentName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DepartmentResponse" nillable="true" type="tns:DepartmentResponse" />
+  <xs:complexType name="EmployeeRequest">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ManagedDepartments" nillable="true" type="q1:ArrayOfint" />
+      <xs:element minOccurs="0" name="SearchName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EmployeeRequest" nillable="true" type="tns:EmployeeRequest" />
+  <xs:complexType name="ArrayOfEmployeeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="EmployeeResponse" nillable="true" type="tns:EmployeeResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfEmployeeResponse" nillable="true" type="tns:ArrayOfEmployeeResponse" />
+</xs:schema>

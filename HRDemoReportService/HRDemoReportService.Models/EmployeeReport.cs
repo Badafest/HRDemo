@@ -16,6 +16,12 @@ public class EmployeeReport
     [DataMember]
     public double AnnualSalary { get; set; } = 0;
     [DataMember]
+    public double WorkingDaysInMonth { get; set; } = 0;
+    [DataMember]
+    public double WorkingDaysInYear { get; set; } = 0;
+    [DataMember]
+    public double MonthSalary { get; set; } = 0;
+    [DataMember]
     public int PresentDays { get; set; } = 0;
     [DataMember]
     public int LateDays { get; set; } = 0;
