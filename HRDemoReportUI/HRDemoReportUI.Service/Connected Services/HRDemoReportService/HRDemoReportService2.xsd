@@ -19,6 +19,7 @@
   <xs:element name="ReportResponse" nillable="true" type="tns:ReportResponse" />
   <xs:complexType name="EmployeeReport">
     <xs:sequence>
+      <xs:element minOccurs="0" name="AbsentDays" type="xs:int" />
       <xs:element minOccurs="0" name="AnnualSalary" type="xs:double" />
       <xs:element minOccurs="0" name="BereavementLeave" type="xs:int" />
       <xs:element minOccurs="0" name="CasualLeave" type="xs:int" />
@@ -34,8 +35,8 @@
       <xs:element minOccurs="0" name="SickLeave" type="xs:int" />
       <xs:element minOccurs="0" name="State" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="UnpaidLeave" type="xs:int" />
-      <xs:element minOccurs="0" name="WorkingDaysInMonth" type="xs:double" />
-      <xs:element minOccurs="0" name="WorkingDaysInYear" type="xs:double" />
+      <xs:element minOccurs="0" name="WorkingDaysInMonth" type="xs:short" />
+      <xs:element minOccurs="0" name="WorkingDaysInYear" type="xs:short" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="EmployeeReport" nillable="true" type="tns:EmployeeReport" />

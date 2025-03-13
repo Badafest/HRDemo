@@ -3,9 +3,11 @@ using HRDemoReportUI.Service.HRDemoReportService;
 using System;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace HRDemoReportUI
 {
@@ -27,6 +29,7 @@ namespace HRDemoReportUI
         private DateTimeOffset lastEmployeeSearched = DateTimeOffset.MinValue;
 
         public ReportResponse ReportData { get; set; }
+        public bool IsMyReport { get; set; }
         public _Default()
         {
             var configuration = ConfigurationManager.AppSettings;
@@ -100,31 +103,45 @@ namespace HRDemoReportUI
         }
         protected void GenerateMyReportBtn_Click(object sender, EventArgs e)
         {
-            var reportRequest = new ReportRequest()
-            {
-                EmployeeID = ((SiteMaster)Master).UserData.EmployeeID,
-                Month = short.TryParse(reportMonthSelectList.SelectedValue, out short month) ? month : (short)0,
-                Year = short.TryParse(reportYearSelectList.SelectedValue, out short year) ? year : (short)1900,
-                TimezoneOffset = float.TryParse(timezoneOffset.Value, out float offset) ? offset : 0
-            };
+            IsMyReport = true;
+            var reportRequest = GetReportRequest();
             ReportData = reportService.GetReportData(reportRequest);
+
         }
 
         protected void GenerateEmployeeReportBtn_Click(object sender, EventArgs e)
         {
-            var reportRequest = new ReportRequest()
-            {
-                EmployeeID = int.TryParse(employeeSelectList.SelectedValue,out int id) ? id : 0,
-                Month = short.TryParse(reportMonthSelectList.SelectedValue, out short month) ? month : (short)0,
-                Year = short.TryParse(reportYearSelectList.SelectedValue, out short year) ? year : (short)1900,
-                TimezoneOffset = float.TryParse(timezoneOffset.Value, out float offset) ? offset : 0
-            };
+            IsMyReport = false;
+            var reportRequest = GetReportRequest();
             ReportData = reportService.GetReportData(reportRequest);
         }
 
         protected void GetPDFReportBtn_Click(object sender, EventArgs e)
         {
+            var year = short.TryParse(reportYearSelectList.SelectedValue, out short parsedYear) ? parsedYear : (short)1900;
+            var month = reportMonthSelectList.SelectedItem.Text;
 
+            IsMyReport = (sender as Button).ID.Contains("Self");
+            ReportData = reportService.GetReportData(GetReportRequest());
+            Stream pdfReportStream = PDF.PDFReportGenerator.Generate(ReportData, year, month);
+
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", $"attachment; filename={ReportData.EmployeeReport.FirstName}_{ReportData.EmployeeReport.LastName}_{year}_{month}.pdf");
+            pdfReportStream.CopyTo(Response.OutputStream);
+            Response.Flush();
+            Response.End();
+        }
+
+        private ReportRequest GetReportRequest()
+        {
+            return new ReportRequest()
+            {
+                EmployeeID = IsMyReport ? ((SiteMaster)Master).UserData.EmployeeID : (int.TryParse(employeeSelectList.SelectedValue, out int id) ? id : 0),
+                Month = short.TryParse(reportMonthSelectList.SelectedValue, out short month) ? month : (short)0,
+                Year = short.TryParse(reportYearSelectList.SelectedValue, out short year) ? year : (short)1900,
+                TimezoneOffset = float.TryParse(timezoneOffset.Value, out float offset) ? offset : 0
+            };
         }
     }
 }

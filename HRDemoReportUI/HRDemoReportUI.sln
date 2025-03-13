@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoReportUI", "HRDemoRep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoReportUI.Service", "HRDemoReportUI.Service\HRDemoReportUI.Service.csproj", "{8A54B90B-8BE8-4623-A703-5B1AE5876392}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoReportUI.PDF", "HRDemoReportUI.PDF\HRDemoReportUI.PDF.csproj", "{A769E417-E0CD-4971-9D8B-00ED77E02EB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoReportUI.PDF", "HRDemoReportUI.PDF\HRDemoReportUI.PDF.csproj", "{C4EC86E6-433B-4BB1-BE94-D649ECD14F0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{8A54B90B-8BE8-4623-A703-5B1AE5876392}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A54B90B-8BE8-4623-A703-5B1AE5876392}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A54B90B-8BE8-4623-A703-5B1AE5876392}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A769E417-E0CD-4971-9D8B-00ED77E02EB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A769E417-E0CD-4971-9D8B-00ED77E02EB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A769E417-E0CD-4971-9D8B-00ED77E02EB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A769E417-E0CD-4971-9D8B-00ED77E02EB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4EC86E6-433B-4BB1-BE94-D649ECD14F0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4EC86E6-433B-4BB1-BE94-D649ECD14F0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4EC86E6-433B-4BB1-BE94-D649ECD14F0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4EC86E6-433B-4BB1-BE94-D649ECD14F0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

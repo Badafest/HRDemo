@@ -177,6 +177,9 @@ namespace HRDemoReportUI.Service.HRDemoReportService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int AbsentDaysField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private double AnnualSalaryField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -222,10 +225,10 @@ namespace HRDemoReportUI.Service.HRDemoReportService {
         private int UnpaidLeaveField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private double WorkingDaysInMonthField;
+        private short WorkingDaysInMonthField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private double WorkingDaysInYearField;
+        private short WorkingDaysInYearField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -234,6 +237,19 @@ namespace HRDemoReportUI.Service.HRDemoReportService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int AbsentDays {
+            get {
+                return this.AbsentDaysField;
+            }
+            set {
+                if ((this.AbsentDaysField.Equals(value) != true)) {
+                    this.AbsentDaysField = value;
+                    this.RaisePropertyChanged("AbsentDays");
+                }
             }
         }
         
@@ -433,7 +449,7 @@ namespace HRDemoReportUI.Service.HRDemoReportService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double WorkingDaysInMonth {
+        public short WorkingDaysInMonth {
             get {
                 return this.WorkingDaysInMonthField;
             }
@@ -446,7 +462,7 @@ namespace HRDemoReportUI.Service.HRDemoReportService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double WorkingDaysInYear {
+        public short WorkingDaysInYear {
             get {
                 return this.WorkingDaysInYearField;
             }

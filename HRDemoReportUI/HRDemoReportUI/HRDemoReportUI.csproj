@@ -220,6 +220,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HRDemoReportUI.PDF\HRDemoReportUI.PDF.csproj">
+      <Project>{c4ec86e6-433b-4bb1-be94-d649ecd14f0b}</Project>
+      <Name>HRDemoReportUI.PDF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HRDemoReportUI.Service\HRDemoReportUI.Service.csproj">
       <Project>{8a54b90b-8be8-4623-a703-5b1ae5876392}</Project>
       <Name>HRDemoReportUI.Service</Name>

@@ -28,7 +28,7 @@
         </div>
         <asp:HiddenField ID="timezoneOffset" runat="server" />
         <hr />
-        <div class="m-2 p-4 px-5 border border-1" style="max-width: 800px;">
+        <div class="m-2 p-4 px-5 border border-1" id="report-preview" style="max-width: 800px;" data-preview-available="<%:ReportData == null ? "false" : "true" %>">
             <%if (ReportData == null)
             {%>
                 <div>Please generate a report to see its preview here.</div>
@@ -41,12 +41,16 @@
                         <h4><%: ReportData.EmployeeReport.FirstName %> <%: ReportData.EmployeeReport.LastName %> (<%: ReportData.EmployeeReport.State %>, <%: ReportData.EmployeeReport.Country %>)</h4>
                         <h6><%: reportYearSelectList.SelectedValue %> <%: reportMonthSelectList.SelectedItem.Text%></h6>
                     </div>
-                    <asp:Button UseSubmitBehavior="false" ID="getPDFReportBtn" runat="server" Text="Download PDF" CssClass="btn btn-primary" OnClick="GetPDFReportBtn_Click"/>
+                    <%if (IsMyReport) {%>
+                      <asp:Button UseSubmitBehavior="false" ID="getPDFReportBtn_Self" runat="server" Text="Download PDF" CssClass="btn btn-primary" OnClick="GetPDFReportBtn_Click"/>
+                    <%} else {%>
+                      <asp:Button UseSubmitBehavior="false" ID="getPDFReportBtn_Employee" runat="server" Text="Download PDF" CssClass="btn btn-primary" OnClick="GetPDFReportBtn_Click"/>
+                    <%} %>
                 </div>
                 <hr />
 
                 <h5>Salary Calculation</h5>
-                <table class="table table-bordered">
+                <table class="table table-bordered table-two-cols">
                     <tbody>
                         <tr>
                             <td><strong>Working Days</strong></td>
@@ -68,7 +72,7 @@
                 </table>
                 <hr />
                 <h5>Attendance Summary</h5>
-                <table class="table table-bordered">
+                <table class="table table-bordered table-two-cols">
                     <tbody>
                         <tr>
                             <td><strong>Present Days</strong></td>
@@ -84,13 +88,15 @@
                         </tr>
                         <tr>
                             <td><strong>Absent Days</strong></td>
-                            <td><%: ReportData.EmployeeReport.PresentDays %></td>
+                            <td>
+                                <%: ReportData.EmployeeReport.AbsentDays %>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
                 <hr />
                 <h5>Leave Summary</h5>
-                <table class="table table-bordered">
+                <table class="table table-bordered table-two-cols">
                     <tbody>
                         <tr>
                             <td><strong>Sick Leave</strong></td>
@@ -123,11 +129,11 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <td>Gross Amount</td>
-                            <td>Pre Tax Deduction</td>
-                            <td>Tax Deduction</td>
-                            <td>Post Tax Deduction</td>
-                            <td>Net Amount</td>
+                            <td class="fw-bold">Gross Amount</td>
+                            <td class="fw-bold">Pre Tax Deduction</td>
+                            <td class="fw-bold">Tax Deduction</td>
+                            <td class="fw-bold">Post Tax Deduction</td>
+                            <td class="fw-bold">Net Amount</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -150,12 +156,22 @@
                         </tr>
                     </tbody>
                 </table>
+                <hr />
+                <div class="d-flex justify-content-between align-items-end report-footer" style="gap: 6px;">
+                    <span class="small"><%:DateTime.Now.ToString("MM/dd/yyyy") %></span>
+                    <span class="small">Page <span class="currentPageNumber">1</span> of <span class="totalPages" >1</span></span>
+                </div>
             <%} %>
         </div>
     </main>
 
     <style>
         table td
+        {
+            width: auto;
+        }
+
+        table.table-two-cols td
         {
             width: 50%;
         }

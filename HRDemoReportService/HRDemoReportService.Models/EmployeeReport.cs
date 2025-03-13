@@ -16,9 +16,9 @@ public class EmployeeReport
     [DataMember]
     public double AnnualSalary { get; set; } = 0;
     [DataMember]
-    public double WorkingDaysInMonth { get; set; } = 0;
+    public short WorkingDaysInMonth { get; set; } = 0;
     [DataMember]
-    public double WorkingDaysInYear { get; set; } = 0;
+    public short WorkingDaysInYear { get; set; } = 0;
     [DataMember]
     public double MonthSalary { get; set; } = 0;
     [DataMember]
@@ -27,6 +27,8 @@ public class EmployeeReport
     public int LateDays { get; set; } = 0;
     [DataMember]
     public int LeaveDays { get; set; } = 0;
+    [DataMember]
+    public int AbsentDays { get; set; } = 0;
     [DataMember]
     public int SickLeave { get; set; } = 0;
     [DataMember]

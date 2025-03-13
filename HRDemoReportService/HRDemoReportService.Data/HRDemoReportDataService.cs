@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 
 namespace HRDemoReportService.Data
 {
@@ -107,7 +106,7 @@ namespace HRDemoReportService.Data
                     }
                 }
                 response.EmployeeReport.MonthSalary = Math.Round(response.EmployeeReport.WorkingDaysInMonth*(response.EmployeeReport.AnnualSalary / response.EmployeeReport.WorkingDaysInYear), 2);
-
+                response.EmployeeReport.AbsentDays = response.EmployeeReport.WorkingDaysInMonth - response.EmployeeReport.PresentDays - response.EmployeeReport.LateDays - response.EmployeeReport.LeaveDays;
                 // payrolls
                 using (var query = connection.CreateCommand())
                 {
@@ -118,9 +117,10 @@ namespace HRDemoReportService.Data
                     query.CommandTimeout = _commandTimeout;
                     using (var reader = query.ExecuteReader())
                     {
+                        var payrolls = new List<PayrollReport>();
                         while (reader.Read())
                         {
-                            response.PayrollReports.Append(new PayrollReport
+                            payrolls.Add(new PayrollReport
                             {
                                 PayrollID = reader.GetInt32(0),
                                 Month = reader.GetInt16(1),
@@ -132,6 +132,7 @@ namespace HRDemoReportService.Data
                                 NetAmount = reader.GetDouble(7),
                             });
                         }
+                        response.PayrollReports = payrolls;
                     }
                 }
             }
@@ -175,7 +176,7 @@ namespace HRDemoReportService.Data
             }
             return response;
         }
-        private static int ComputeWorkingDaysInMonth(short year, short month)
+        private static short ComputeWorkingDaysInMonth(short year, short month)
         {
             // Get the total number of days in the month
             int totalDaysInMonth = DateTime.DaysInMonth(year, month);
@@ -185,7 +186,7 @@ namespace HRDemoReportService.Data
 
             return ComputeWorkingDays(totalDaysInMonth, firstDayOfWeek); 
         }
-        private static int ComputeWorkingDaysInYear(short year)
+        private static short ComputeWorkingDaysInYear(short year)
         {
             // Check if the year is a leap year
             bool isLeapYear = DateTime.IsLeapYear(year);
@@ -199,7 +200,7 @@ namespace HRDemoReportService.Data
             return ComputeWorkingDays(totalDaysInYear, firstDayOfWeek);
         }
 
-        private static int ComputeWorkingDays(int totalDays, int firstDayOfWeek) 
+        private static short ComputeWorkingDays(int totalDays, int firstDayOfWeek) 
         {
             // Calculate total Saturdays
             int saturdayOffset = (6 - firstDayOfWeek + 7) % 7; // First Saturday
@@ -210,7 +211,7 @@ namespace HRDemoReportService.Data
             int sundays = (totalDays - sundayOffset) / 7 + 1;
 
             // Return the computed working days
-            return totalDays - saturdays - sundays;
+            return (short)(totalDays - saturdays - sundays);
         } 
     }
 }

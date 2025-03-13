@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PayrollReports>
+  <PayrollReport>
+    <GrossAmount>1000</GrossAmount>
+    <PreTaxDeduction>200</PreTaxDeduction>
+    <TaxDeduction>150</TaxDeduction>
+    <PostTaxDeduction>50</PostTaxDeduction>
+    <NetAmount>600</NetAmount>
+  </PayrollReport>
+  <PayrollReport>
+    <GrossAmount>1200</GrossAmount>
+    <PreTaxDeduction>250</PreTaxDeduction>
+    <TaxDeduction>180</TaxDeduction>
+    <PostTaxDeduction>60</PostTaxDeduction>
+    <NetAmount>710</NetAmount>
+  </PayrollReport>
+  <PayrollReport>
+    <GrossAmount>900</GrossAmount>
+    <PreTaxDeduction>180</PreTaxDeduction>
+    <TaxDeduction>120</TaxDeduction>
+    <PostTaxDeduction>40</PostTaxDeduction>
+    <NetAmount>560</NetAmount>
+  </PayrollReport>
+</PayrollReports>
