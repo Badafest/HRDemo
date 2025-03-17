@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoReportUI.Service", "H
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoReportUI.PDF", "HRDemoReportUI.PDF\HRDemoReportUI.PDF.csproj", "{C4EC86E6-433B-4BB1-BE94-D649ECD14F0B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoReportUI.ServiceCore", "HRDemoReportUI.ServiceCore\HRDemoReportUI.ServiceCore.csproj", "{BC555C2B-3348-4827-FDEE-8C2E68029141}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C4EC86E6-433B-4BB1-BE94-D649ECD14F0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4EC86E6-433B-4BB1-BE94-D649ECD14F0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4EC86E6-433B-4BB1-BE94-D649ECD14F0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC555C2B-3348-4827-FDEE-8C2E68029141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC555C2B-3348-4827-FDEE-8C2E68029141}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC555C2B-3348-4827-FDEE-8C2E68029141}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC555C2B-3348-4827-FDEE-8C2E68029141}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
