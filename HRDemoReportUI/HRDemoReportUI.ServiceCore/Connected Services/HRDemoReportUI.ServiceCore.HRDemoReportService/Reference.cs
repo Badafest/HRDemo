@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HRDemoReportService
+namespace HRDemoReportUI.ServiceCore.HRDemoReportService
 {
     using System.Runtime.Serialization;
     
@@ -112,12 +112,12 @@ namespace HRDemoReportService
     public partial class ReportResponse : object, System.ComponentModel.INotifyPropertyChanged
     {
         
-        private HRDemoReportService.EmployeeReport EmployeeReportField;
+        private HRDemoReportUI.ServiceCore.HRDemoReportService.EmployeeReport EmployeeReportField;
         
-        private HRDemoReportService.PayrollReport[] PayrollReportsField;
+        private HRDemoReportUI.ServiceCore.HRDemoReportService.PayrollReport[] PayrollReportsField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public HRDemoReportService.EmployeeReport EmployeeReport
+        public HRDemoReportUI.ServiceCore.HRDemoReportService.EmployeeReport EmployeeReport
         {
             get
             {
@@ -134,7 +134,7 @@ namespace HRDemoReportService
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public HRDemoReportService.PayrollReport[] PayrollReports
+        public HRDemoReportUI.ServiceCore.HRDemoReportService.PayrollReport[] PayrollReports
         {
             get
             {
@@ -732,7 +732,7 @@ namespace HRDemoReportService
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EmployeeResponse", Namespace="http://schemas.datacontract.org/2004/07/")]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(HRDemoReportService.UserResponse))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(HRDemoReportUI.ServiceCore.HRDemoReportService.UserResponse))]
     public partial class EmployeeResponse : object, System.ComponentModel.INotifyPropertyChanged
     {
         
@@ -789,17 +789,17 @@ namespace HRDemoReportService
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.Runtime.Serialization.DataContractAttribute(Name="UserResponse", Namespace="http://schemas.datacontract.org/2004/07/")]
-    public partial class UserResponse : HRDemoReportService.EmployeeResponse
+    public partial class UserResponse : HRDemoReportUI.ServiceCore.HRDemoReportService.EmployeeResponse
     {
         
-        private HRDemoReportService.DepartmentResponse[] ManagedDepartmentsField;
+        private HRDemoReportUI.ServiceCore.HRDemoReportService.DepartmentResponse[] ManagedDepartmentsField;
         
         private int UserIDField;
         
         private short UserRoleField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public HRDemoReportService.DepartmentResponse[] ManagedDepartments
+        public HRDemoReportUI.ServiceCore.HRDemoReportService.DepartmentResponse[] ManagedDepartments
         {
             get
             {
@@ -963,37 +963,37 @@ namespace HRDemoReportService
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="HRDemoReportService.IHRDemoReportService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="HRDemoReportUI.ServiceCore.HRDemoReportService.IHRDemoReportService")]
     public interface IHRDemoReportService
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IHRDemoReportService/GetEmployeeMonthlyReport", ReplyAction="http://tempuri.org/IHRDemoReportService/GetEmployeeMonthlyReportResponse")]
-        HRDemoReportService.ReportResponse GetEmployeeMonthlyReport(HRDemoReportService.ReportRequest request);
+        HRDemoReportUI.ServiceCore.HRDemoReportService.ReportResponse GetEmployeeMonthlyReport(HRDemoReportUI.ServiceCore.HRDemoReportService.ReportRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IHRDemoReportService/GetEmployeeMonthlyReport", ReplyAction="http://tempuri.org/IHRDemoReportService/GetEmployeeMonthlyReportResponse")]
-        System.Threading.Tasks.Task<HRDemoReportService.ReportResponse> GetEmployeeMonthlyReportAsync(HRDemoReportService.ReportRequest request);
+        System.Threading.Tasks.Task<HRDemoReportUI.ServiceCore.HRDemoReportService.ReportResponse> GetEmployeeMonthlyReportAsync(HRDemoReportUI.ServiceCore.HRDemoReportService.ReportRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IHRDemoReportService/GetUserDetails", ReplyAction="http://tempuri.org/IHRDemoReportService/GetUserDetailsResponse")]
-        HRDemoReportService.UserResponse GetUserDetails(HRDemoReportService.UserRequest request);
+        HRDemoReportUI.ServiceCore.HRDemoReportService.UserResponse GetUserDetails(HRDemoReportUI.ServiceCore.HRDemoReportService.UserRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IHRDemoReportService/GetUserDetails", ReplyAction="http://tempuri.org/IHRDemoReportService/GetUserDetailsResponse")]
-        System.Threading.Tasks.Task<HRDemoReportService.UserResponse> GetUserDetailsAsync(HRDemoReportService.UserRequest request);
+        System.Threading.Tasks.Task<HRDemoReportUI.ServiceCore.HRDemoReportService.UserResponse> GetUserDetailsAsync(HRDemoReportUI.ServiceCore.HRDemoReportService.UserRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IHRDemoReportService/GetEmployeeOptions", ReplyAction="http://tempuri.org/IHRDemoReportService/GetEmployeeOptionsResponse")]
-        HRDemoReportService.EmployeeResponse[] GetEmployeeOptions(HRDemoReportService.EmployeeRequest request);
+        HRDemoReportUI.ServiceCore.HRDemoReportService.EmployeeResponse[] GetEmployeeOptions(HRDemoReportUI.ServiceCore.HRDemoReportService.EmployeeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IHRDemoReportService/GetEmployeeOptions", ReplyAction="http://tempuri.org/IHRDemoReportService/GetEmployeeOptionsResponse")]
-        System.Threading.Tasks.Task<HRDemoReportService.EmployeeResponse[]> GetEmployeeOptionsAsync(HRDemoReportService.EmployeeRequest request);
+        System.Threading.Tasks.Task<HRDemoReportUI.ServiceCore.HRDemoReportService.EmployeeResponse[]> GetEmployeeOptionsAsync(HRDemoReportUI.ServiceCore.HRDemoReportService.EmployeeRequest request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    public interface IHRDemoReportServiceChannel : HRDemoReportService.IHRDemoReportService, System.ServiceModel.IClientChannel
+    public interface IHRDemoReportServiceChannel : HRDemoReportUI.ServiceCore.HRDemoReportService.IHRDemoReportService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    public partial class HRDemoReportServiceClient : System.ServiceModel.ClientBase<HRDemoReportService.IHRDemoReportService>, HRDemoReportService.IHRDemoReportService
+    public partial class HRDemoReportServiceClient : System.ServiceModel.ClientBase<HRDemoReportUI.ServiceCore.HRDemoReportService.IHRDemoReportService>, HRDemoReportUI.ServiceCore.HRDemoReportService.IHRDemoReportService
     {
         
         /// <summary>
@@ -1036,32 +1036,32 @@ namespace HRDemoReportService
         {
         }
         
-        public HRDemoReportService.ReportResponse GetEmployeeMonthlyReport(HRDemoReportService.ReportRequest request)
+        public HRDemoReportUI.ServiceCore.HRDemoReportService.ReportResponse GetEmployeeMonthlyReport(HRDemoReportUI.ServiceCore.HRDemoReportService.ReportRequest request)
         {
             return base.Channel.GetEmployeeMonthlyReport(request);
         }
         
-        public System.Threading.Tasks.Task<HRDemoReportService.ReportResponse> GetEmployeeMonthlyReportAsync(HRDemoReportService.ReportRequest request)
+        public System.Threading.Tasks.Task<HRDemoReportUI.ServiceCore.HRDemoReportService.ReportResponse> GetEmployeeMonthlyReportAsync(HRDemoReportUI.ServiceCore.HRDemoReportService.ReportRequest request)
         {
             return base.Channel.GetEmployeeMonthlyReportAsync(request);
         }
         
-        public HRDemoReportService.UserResponse GetUserDetails(HRDemoReportService.UserRequest request)
+        public HRDemoReportUI.ServiceCore.HRDemoReportService.UserResponse GetUserDetails(HRDemoReportUI.ServiceCore.HRDemoReportService.UserRequest request)
         {
             return base.Channel.GetUserDetails(request);
         }
         
-        public System.Threading.Tasks.Task<HRDemoReportService.UserResponse> GetUserDetailsAsync(HRDemoReportService.UserRequest request)
+        public System.Threading.Tasks.Task<HRDemoReportUI.ServiceCore.HRDemoReportService.UserResponse> GetUserDetailsAsync(HRDemoReportUI.ServiceCore.HRDemoReportService.UserRequest request)
         {
             return base.Channel.GetUserDetailsAsync(request);
         }
         
-        public HRDemoReportService.EmployeeResponse[] GetEmployeeOptions(HRDemoReportService.EmployeeRequest request)
+        public HRDemoReportUI.ServiceCore.HRDemoReportService.EmployeeResponse[] GetEmployeeOptions(HRDemoReportUI.ServiceCore.HRDemoReportService.EmployeeRequest request)
         {
             return base.Channel.GetEmployeeOptions(request);
         }
         
-        public System.Threading.Tasks.Task<HRDemoReportService.EmployeeResponse[]> GetEmployeeOptionsAsync(HRDemoReportService.EmployeeRequest request)
+        public System.Threading.Tasks.Task<HRDemoReportUI.ServiceCore.HRDemoReportService.EmployeeResponse[]> GetEmployeeOptionsAsync(HRDemoReportUI.ServiceCore.HRDemoReportService.EmployeeRequest request)
         {
             return base.Channel.GetEmployeeOptionsAsync(request);
         }

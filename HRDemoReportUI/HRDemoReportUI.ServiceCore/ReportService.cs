@@ -1,4 +1,4 @@
-﻿using HRDemoReportService;
+﻿using HRDemoReportUI.ServiceCore.HRDemoReportService;
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
