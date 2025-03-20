@@ -1,0 +1,303 @@
+﻿@using System.Globalization
+
+@page "/"
+@rendermode InteractiveServer
+
+@inject ReportService reportService
+@inject UserService userService
+@inject IJSRuntime JS
+
+<PageTitle>Home</PageTitle>
+
+<div id="BodyContent">
+    <hr />
+    <main>
+        <div class="d-flex align-items-end" style="gap: 6px;">
+
+            <div class="form-group">
+                <label class="form-label" for="employeeSearch">Search Employee</label>
+                <input id="employeeSearch" class="form-control" type="text" value="@searchText" @onchange="SearchText_Change" />
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="employeeSelectList">Select Employee</label>
+                <select id="employeeSelectList" class="form-control" style="min-width: max-content" @bind="selectedEmployeeID">
+                    @foreach (var option in employeeOptions)
+                    {
+                        <option id="employee#@option.EmployeeID" value="@option.EmployeeID" selected="@(option.EmployeeID == selectedEmployeeID)">
+                            @option.EmployeeName
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="reportYearSelectList">Year</label>
+                <select id="reportYearSelectList" class="form-control" style="min-width: max-content" @bind="selectedYear">
+                    @foreach (var option in yearOptions)
+                    {
+                        <option id="year#@option" value="@option" selected="@(option == selectedYear)">
+                            @option
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="reportMonthSelectList">Month</label>
+                <select id="reportMonthSelectList" class="form-control" style="min-width: max-content" @bind="selectedMonth">
+                    @for (var i = 0; i < monthOptions.Length; i++)
+                    {
+                        <option id="month#@(i+1)" value="@(i+1)" selected="@(i+1 == selectedMonth)">@monthOptions[i]</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between align-items-end" style="gap: 6px;">
+            <button type="button" id="generateEmployeeReportBtn" class="btn btn-primary" @onclick="GenerateEmployeeReportBtn_Click" disabled="@(selectedEmployeeID==0)">Generate Employee's Report</button>
+            <button type="button" id="generateMyReportBtn" class="btn btn-primary" @onclick="GenerateMyReportBtn_Click">Generate My Report</button>
+        </div>
+        <input id="timezoneOffset" hidden />
+        <hr />
+        <div @key="@DateTimeOffset.UtcNow" id="report-preview" class="m-2 p-4 px-5 border border-1" style="max-width: 800px" data-preview-available="@(ReportData != null)">
+            @if (ReportData == null)
+            {
+                <div>Please generate a report to see its preview here.</div>
+            }
+
+            @if (ReportData?.EmployeeReport != null)
+            {
+                <div class="d-flex align-items-start justify-content-between" style="gap: 6px;">
+                    <div>
+                        <h3>Monthly Employee Report</h3>
+                        <h4>@ReportData.EmployeeReport.FirstName @ReportData.EmployeeReport.LastName (@ReportData.EmployeeReport.State, @ReportData.EmployeeReport.Country)</h4>
+                        <h6>@selectedYear @(monthOptions[selectedMonth - 1])</h6>
+                    </div>
+                    <button type="button" id="getPDFReportBtn_@(IsMyReport ? "Self" : "Employee")" class="btn btn-primary" @onclick="() => GetPDFReportBtn_Click(IsMyReport)">Download PDF</button>
+                </div>
+                <hr />
+
+                <h5>Salary Calculation</h5>
+                <table class="table table-bordered table-two-cols">
+                    <tbody>
+                        <tr>
+                            <td><strong>Working Days</strong></td>
+                            <td>@ReportData.EmployeeReport.WorkingDaysInMonth (out of @ReportData.EmployeeReport.WorkingDaysInYear)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Annual Salary</strong></td>
+                            <td>$@ReportData.EmployeeReport.AnnualSalary</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gross Salary</strong></td>
+                            <td>$@ReportData.EmployeeReport.MonthSalary</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Daily Wage</strong></td>
+                            <td>$@Math.Round(ReportData.EmployeeReport.MonthSalary / ReportData.EmployeeReport.WorkingDaysInMonth, 2)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr />
+                <h5>Attendance Summary</h5>
+                <table class="table table-bordered table-two-cols">
+                    <tbody>
+                        <tr>
+                            <td><strong>Present Days</strong></td>
+                            <td>@ReportData.EmployeeReport.PresentDays</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Late Days</strong></td>
+                            <td>@ReportData.EmployeeReport.LateDays</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Leave Days</strong></td>
+                            <td>@ReportData.EmployeeReport.LeaveDays</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Absent Days</strong></td>
+                            <td>
+                                @ReportData.EmployeeReport.AbsentDays
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr />
+                <h5>Leave Summary</h5>
+                <table class="table table-bordered table-two-cols">
+                    <tbody>
+                        <tr>
+                            <td><strong>Sick Leave</strong></td>
+                            <td>@ReportData.EmployeeReport.SickLeave</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Casual Leave</strong></td>
+                            <td>@ReportData.EmployeeReport.CasualLeave</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Parental Leave</strong></td>
+                            <td>@ReportData.EmployeeReport.ParentalLeave</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bereavement Leave</strong></td>
+                            <td>@ReportData.EmployeeReport.BereavementLeave</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Unpaid Leave</strong></td>
+                            <td>@ReportData.EmployeeReport.UnpaidLeave</td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+
+            @if (ReportData?.PayrollReports != null && ReportData.PayrollReports.Length > 0)
+            {
+                <hr />
+                <h5>Payrolls</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td class="fw-bold">Gross Amount</td>
+                            <td class="fw-bold">Pre Tax Deduction</td>
+                            <td class="fw-bold">Tax Deduction</td>
+                            <td class="fw-bold">Post Tax Deduction</td>
+                            <td class="fw-bold">Net Amount</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var payroll in ReportData.PayrollReports)
+                        {
+                            <tr>
+                                <td>$@payroll.GrossAmount</td>
+                                <td>$@payroll.PreTaxDeduction</td>
+                                <td>$@payroll.TaxDeduction</td>
+                                <td>$@payroll.PostTaxDeduction</td>
+                                <td>$@payroll.NetAmount</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td><strong>$@ReportData.PayrollReports.Sum(p => p.GrossAmount)</strong></td>
+                            <td><strong>$@ReportData.PayrollReports.Sum(p => p.PreTaxDeduction)</strong></td>
+                            <td><strong>$@ReportData.PayrollReports.Sum(p => p.TaxDeduction)</strong></td>
+                            <td><strong>$@ReportData.PayrollReports.Sum(p => p.PostTaxDeduction)</strong></td>
+                            <td><strong>$@ReportData.PayrollReports.Sum(p => p.NetAmount)</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+        </div>
+    </main>
+
+    <style>
+        table td {
+        width: auto;
+        }
+
+        table.table-two-cols td {
+        width: 50%;
+        }
+    </style>
+</div>
+
+@code {
+    private readonly EmployeeResponse[] defaultEmployeeOptions = new EmployeeResponse[]
+       {
+            new EmployeeResponse()
+            {
+                EmployeeName = "-- Select an Employee --",
+                EmployeeID = 0
+            }
+       };
+
+    // select field options
+    private EmployeeResponse[] employeeOptions = new EmployeeResponse[] { };
+
+    private static IEnumerable<int> yearOptions = Enumerable.Range(DateTimeOffset.Now.Year - 4, 5)
+                                            .Reverse();
+
+    private static string[] monthOptions = DateTimeFormatInfo.InvariantInfo.MonthNames
+                                    .Where(option => !string.IsNullOrEmpty(option))
+                                    .ToArray();
+
+    // input bound values
+    private string searchText = "";
+    private string timezoneOffset = "";
+    private int selectedEmployeeID = 0;
+    private int selectedYear = DateTimeOffset.Now.Year;
+    private int selectedMonth = DateTimeOffset.Now.Month;
+
+    private DateTimeOffset lastEmployeeSearched = DateTimeOffset.MinValue;
+    private ReportResponse? ReportData { get; set; }
+    private bool IsMyReport { get; set; }
+
+    protected override void OnInitialized()
+    {
+        GetAndSetEmployeeOptions();
+    }
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    #region EVENT HANDLERS
+    private void SearchText_Change(ChangeEventArgs e)
+    {
+        DateTimeOffset newSearchedDate = DateTimeOffset.Now;
+        if (newSearchedDate - lastEmployeeSearched < TimeSpan.FromSeconds(0.5))
+        {
+            return;
+        }
+        lastEmployeeSearched = newSearchedDate;
+        searchText = e.Value?.ToString() ?? "";
+        GetAndSetEmployeeOptions(searchText);
+    }
+    private void GenerateMyReportBtn_Click()
+    {
+        GetAndSetReportData(true);
+    }
+
+    private void GenerateEmployeeReportBtn_Click()
+    {
+        GetAndSetReportData(false);
+    }
+
+    private async void GetPDFReportBtn_Click(bool isMyReport)
+    {
+        GetAndSetReportData(isMyReport);
+        // Handle Report Generation in JavaScript
+        await JS.InvokeVoidAsync("generatePDF", new
+        {
+            ReportData,
+            Year = selectedYear,
+            Month = monthOptions[selectedMonth - 1]
+        });
+    }
+    #endregion
+
+    #region UTILITY METHODS
+    private void GetAndSetEmployeeOptions(string searchName = "")
+    {
+        var employees = reportService.GetEmployeeOptions(new EmployeeRequest()
+            {
+                ManagedDepartments = userService.UserData?.ManagedDepartments?.Select(d => d.DepartmentID).ToArray(),
+                SearchName = searchName
+            });
+        employeeOptions = defaultEmployeeOptions.Concat(employees).ToArray();
+    }
+
+    private void GetAndSetReportData(bool isMyReport)
+    {
+        IsMyReport = isMyReport;
+        var request = new ReportRequest()
+            {
+                EmployeeID = isMyReport ? userService.UserData.EmployeeID : selectedEmployeeID,
+                Month = (short)selectedMonth,
+                Year = (short)selectedYear,
+                TimezoneOffset = float.TryParse(timezoneOffset, out float offset) ? offset : 0
+            };
+        ReportData = reportService.GetReportData(request);
+    }
+    #endregion
+
+}

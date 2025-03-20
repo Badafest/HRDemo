@@ -1,0 +1,29 @@
+﻿@inherits LayoutComponentBase
+@inject UserService userService;
+
+<div class="page">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container p-0">
+            <a class="navbar-brand" runat="server" href="~/">HR Demo Report (Core)</a>
+        </div>
+    </nav>
+    <div class="container body-content">
+        <div class="d-flex justify-content-between align-content-end mb-2">
+            <div>
+                <p class="m-0">@DateTime.Now.ToString("MMMM dd, yyyy")</p>
+                <p class="m-0">@DateTime.Now.ToString("dddd")</p>
+            </div>
+            <div>
+                <p class="m-0">@userService.UserData.EmployeeName</p>
+                <span class="badge small bg-success">@(new string[] {"User", "Admin"}[userService.UserData.UserRole])</span>
+            </div>
+        </div>
+        <div id="MainContent" class="content">
+            @Body
+        </div>
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - HR Demo</p>
+        </footer>
+    </div>
+</div>
