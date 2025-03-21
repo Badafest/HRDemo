@@ -16,9 +16,8 @@ namespace HRDemoReportService.DataCore
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = @"
+                using var command = connection.CreateCommand();
+                command.CommandText = @"
                         SELECT
                             Users.UserID,
                             Users.EmployeeID, 
@@ -31,31 +30,29 @@ namespace HRDemoReportService.DataCore
                         JOIN Employees ON Employees.EmployeeID = Users.EmployeeID
                         JOIN Departments ON Departments.ManagerID = Users.EmployeeID OR Users.Role = 1
                         WHERE Users.Name = @username";
-                    command.Parameters.Add(new SqlParameter("@username", SqlDbType.NVarChar) { Value = username });
-                    command.CommandTimeout = _commandTimeout;
-                    using (var reader = command.ExecuteReader())
+                command.Parameters.Add(new SqlParameter("@username", SqlDbType.NVarChar) { Value = username });
+                command.CommandTimeout = _commandTimeout;
+
+                using var reader = command.ExecuteReader();
+                var managedDepartments = new List<DepartmentResponse>();
+                int rowCount = 0;
+                while (reader.Read())
+                {
+                    if (rowCount == 0)
                     {
-                        var managedDepartments = new List<DepartmentResponse>();
-                        int rowCount = 0;
-                        while (reader.Read())
-                        {
-                            if (rowCount == 0)
-                            {
-                                response.UserID = reader.GetInt32(0);
-                                response.EmployeeID = reader.GetInt32(1);
-                                response.UserRole = reader.GetInt16(2);
-                                response.EmployeeName = reader.GetString(3);
-                            }
-                            managedDepartments.Add(new DepartmentResponse
-                            {
-                                DepartmentID = reader.GetInt32(4),
-                                DepartmentName = reader.GetString(5)
-                            });
-                            rowCount++;
-                        }
-                        response.ManagedDepartments = managedDepartments.ToArray();
+                        response.UserID = reader.GetInt32(0);
+                        response.EmployeeID = reader.GetInt32(1);
+                        response.UserRole = reader.GetInt16(2);
+                        response.EmployeeName = reader.GetString(3);
                     }
+                    managedDepartments.Add(new DepartmentResponse
+                    {
+                        DepartmentID = reader.GetInt32(4),
+                        DepartmentName = reader.GetString(5)
+                    });
+                    rowCount++;
                 }
+                response.ManagedDepartments = managedDepartments.ToArray();
             }
             return response;
         }
@@ -80,28 +77,27 @@ namespace HRDemoReportService.DataCore
                     command.Parameters.Add(new SqlParameter("@month", SqlDbType.SmallInt) { Value = request.Month });
                     command.Parameters.Add(new SqlParameter("@offset", SqlDbType.Float) { Value = request.TimezoneOffset });
                     command.CommandTimeout = _commandTimeout;
-                    using (var reader = command.ExecuteReader())
+
+                    using var reader = command.ExecuteReader();
+                    if (reader.Read())
                     {
-                        if (reader.Read())
-                        {
-                            response.EmployeeReport.EmployeeID = reader.GetInt32(0);
-                            response.EmployeeReport.FirstName = reader.GetString(1);
-                            response.EmployeeReport.LastName = reader.GetString(2);
-                            response.EmployeeReport.State = reader.GetString(3);
-                            response.EmployeeReport.Country = reader.GetString(4);
-                            response.EmployeeReport.AnnualSalary = reader.GetDouble(5);
-                            response.EmployeeReport.PresentDays = reader.GetInt32(6);
-                            response.EmployeeReport.LateDays = reader.GetInt32(7);
-                            response.EmployeeReport.LeaveDays = reader.GetInt32(8);
-                            response.EmployeeReport.SickLeave = reader.GetInt32(9);
-                            response.EmployeeReport.CasualLeave = reader.GetInt32(10);
-                            response.EmployeeReport.ParentalLeave = reader.GetInt32(11);
-                            response.EmployeeReport.BereavementLeave = reader.GetInt32(12);
-                            response.EmployeeReport.UnpaidLeave = reader.GetInt32(13);
-                        }
+                        response.EmployeeReport.EmployeeID = reader.GetInt32(0);
+                        response.EmployeeReport.FirstName = reader.GetString(1);
+                        response.EmployeeReport.LastName = reader.GetString(2);
+                        response.EmployeeReport.State = reader.GetString(3);
+                        response.EmployeeReport.Country = reader.GetString(4);
+                        response.EmployeeReport.AnnualSalary = reader.GetDouble(5);
+                        response.EmployeeReport.PresentDays = reader.GetInt32(6);
+                        response.EmployeeReport.LateDays = reader.GetInt32(7);
+                        response.EmployeeReport.LeaveDays = reader.GetInt32(8);
+                        response.EmployeeReport.SickLeave = reader.GetInt32(9);
+                        response.EmployeeReport.CasualLeave = reader.GetInt32(10);
+                        response.EmployeeReport.ParentalLeave = reader.GetInt32(11);
+                        response.EmployeeReport.BereavementLeave = reader.GetInt32(12);
+                        response.EmployeeReport.UnpaidLeave = reader.GetInt32(13);
                     }
                 }
-                response.EmployeeReport.MonthSalary = Math.Round(response.EmployeeReport.WorkingDaysInMonth*(response.EmployeeReport.AnnualSalary / response.EmployeeReport.WorkingDaysInYear), 2);
+                response.EmployeeReport.MonthSalary = Math.Round(response.EmployeeReport.WorkingDaysInMonth * (response.EmployeeReport.AnnualSalary / response.EmployeeReport.WorkingDaysInYear), 2);
                 response.EmployeeReport.AbsentDays = response.EmployeeReport.WorkingDaysInMonth - response.EmployeeReport.PresentDays - response.EmployeeReport.LateDays - response.EmployeeReport.LeaveDays;
                 // payrolls
                 using (var query = connection.CreateCommand())
@@ -111,25 +107,24 @@ namespace HRDemoReportService.DataCore
                     query.Parameters.Add(new SqlParameter("@year", SqlDbType.SmallInt) { Value = request.Year });
                     query.Parameters.Add(new SqlParameter("@month", SqlDbType.SmallInt) { Value = request.Month });
                     query.CommandTimeout = _commandTimeout;
-                    using (var reader = query.ExecuteReader())
+
+                    using var reader = query.ExecuteReader();
+                    var payrolls = new List<PayrollReport>();
+                    while (reader.Read())
                     {
-                        var payrolls = new List<PayrollReport>();
-                        while (reader.Read())
+                        payrolls.Add(new PayrollReport
                         {
-                            payrolls.Add(new PayrollReport
-                            {
-                                PayrollID = reader.GetInt32(0),
-                                Month = reader.GetInt16(1),
-                                Year = reader.GetInt16(2),
-                                GrossAmount = reader.GetDouble(3),
-                                PreTaxDeduction = reader.GetDouble(4),
-                                TaxDeduction = reader.GetDouble(5),
-                                PostTaxDeduction = reader.GetDouble(6),
-                                NetAmount = reader.GetDouble(7),
-                            });
-                        }
-                        response.PayrollReports = payrolls;
+                            PayrollID = reader.GetInt32(0),
+                            Month = reader.GetInt16(1),
+                            Year = reader.GetInt16(2),
+                            GrossAmount = reader.GetDouble(3),
+                            PreTaxDeduction = reader.GetDouble(4),
+                            TaxDeduction = reader.GetDouble(5),
+                            PostTaxDeduction = reader.GetDouble(6),
+                            NetAmount = reader.GetDouble(7),
+                        });
                     }
+                    response.PayrollReports = payrolls;
                 }
             }
             return response;
@@ -137,12 +132,11 @@ namespace HRDemoReportService.DataCore
         public EmployeeResponse[] GetEmployeeOptions(EmployeeRequest request)
         {
             var response = Array.Empty<EmployeeResponse>();
-            using(var connection = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = @"
+                using var command = connection.CreateCommand();
+                command.CommandText = @"
                         SELECT TOP 5
 	                        EmployeeID,
 	                        CONCAT(FirstName, ' ', LastName, ' (', Email, ')') as EmployeeName
@@ -151,24 +145,22 @@ namespace HRDemoReportService.DataCore
                             DepartmentID IN (SELECT VALUE FROM string_split(@departmentIds, ','))
                             AND 
                             (@searchString = '' OR (FirstName LIKE '%' + @searchString + '%' OR LastName LIKE '%' + @searchString + '%'));";
-                    
-                    command.Parameters.Add(new SqlParameter("@searchString", SqlDbType.NVarChar) { Value = request.SearchName });
-                    command.Parameters.Add(new SqlParameter("@departmentIds", SqlDbType.NVarChar) { Value = string.Join(",", request.ManagedDepartments) });
-                    command.CommandTimeout = _commandTimeout;
-                    using (var reader = command.ExecuteReader())
+
+                command.Parameters.Add(new SqlParameter("@searchString", SqlDbType.NVarChar) { Value = request.SearchName });
+                command.Parameters.Add(new SqlParameter("@departmentIds", SqlDbType.NVarChar) { Value = string.Join(",", request.ManagedDepartments) });
+                command.CommandTimeout = _commandTimeout;
+
+                using var reader = command.ExecuteReader();
+                var employeeOptions = new List<EmployeeResponse>();
+                while (reader.Read())
+                {
+                    employeeOptions.Add(new EmployeeResponse
                     {
-                        var employeeOptions = new List<EmployeeResponse>();
-                        while (reader.Read())
-                        {
-                            employeeOptions.Add(new EmployeeResponse
-                            {
-                                EmployeeID = reader.GetInt32(0),
-                                EmployeeName = reader.GetString(1)
-                            });
-                        }
-                        response = employeeOptions.ToArray();
-                    }
+                        EmployeeID = reader.GetInt32(0),
+                        EmployeeName = reader.GetString(1)
+                    });
                 }
+                response = employeeOptions.ToArray();
             }
             return response;
         }
@@ -180,7 +172,7 @@ namespace HRDemoReportService.DataCore
             // Get the day of the week for the first day of the month (0 = Sunday, ..., 6 = Saturday)
             int firstDayOfWeek = (int)new DateTime(year, month, 1).DayOfWeek;
 
-            return ComputeWorkingDays(totalDaysInMonth, firstDayOfWeek); 
+            return ComputeWorkingDays(totalDaysInMonth, firstDayOfWeek);
         }
         private static short ComputeWorkingDaysInYear(short year)
         {
@@ -196,11 +188,11 @@ namespace HRDemoReportService.DataCore
             return ComputeWorkingDays(totalDaysInYear, firstDayOfWeek);
         }
 
-        private static short ComputeWorkingDays(int totalDays, int firstDayOfWeek) 
+        private static short ComputeWorkingDays(int totalDays, int firstDayOfWeek)
         {
             // Calculate total Saturdays
             int saturdayOffset = (6 - firstDayOfWeek + 7) % 7; // First Saturday
-            int saturdays = (totalDays- saturdayOffset) / 7 + 1;
+            int saturdays = (totalDays - saturdayOffset) / 7 + 1;
 
             // Calculate total Sundays
             int sundayOffset = (7 - firstDayOfWeek) % 7; // First Sunday
@@ -208,6 +200,6 @@ namespace HRDemoReportService.DataCore
 
             // Return the computed working days
             return (short)(totalDays - saturdays - sundays);
-        } 
+        }
     }
 }

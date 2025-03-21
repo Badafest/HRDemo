@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoReportService.ModelsC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoReportService.DataCore", "HRDemoReportService.DataCore\HRDemoReportService.DataCore.csproj", "{C59D2279-CAB2-D9A4-86A8-C39D3FACA3F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoReportServiceCore", "HRDemoReportServiceCore\HRDemoReportServiceCore.csproj", "{0D68A532-E707-4CCD-8B9D-224F81231DE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,10 +41,10 @@ Global
 		{C59D2279-CAB2-D9A4-86A8-C39D3FACA3F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C59D2279-CAB2-D9A4-86A8-C39D3FACA3F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C59D2279-CAB2-D9A4-86A8-C39D3FACA3F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7EDE7AB7-FA45-1BE2-D98B-D2B54C815A64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7EDE7AB7-FA45-1BE2-D98B-D2B54C815A64}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7EDE7AB7-FA45-1BE2-D98B-D2B54C815A64}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7EDE7AB7-FA45-1BE2-D98B-D2B54C815A64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D68A532-E707-4CCD-8B9D-224F81231DE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D68A532-E707-4CCD-8B9D-224F81231DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D68A532-E707-4CCD-8B9D-224F81231DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D68A532-E707-4CCD-8B9D-224F81231DE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

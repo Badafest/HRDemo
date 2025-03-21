@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.ServiceModel;
-
-namespace HRDemoReportService
+﻿namespace HRDemoReportServiceCore
 {
     public class ApiKey
     {
@@ -23,25 +18,23 @@ namespace HRDemoReportService
 
     public class ApiKeyAuthorizationManager : ServiceAuthorizationManager
     {
-        private readonly ApiKey[] _validKeys = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "apikeys.txt"))
+        private readonly ApiKey[] _validKeys = [.. File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "apikeys.txt"))
                                                    .Where(k => k.Length > 1)
-                                                   .Select(k => new ApiKey(k))
-                                                   .ToArray();
-        protected override bool CheckAccessCore(OperationContext operationContext)
+                                                   .Select(k => new ApiKey(k))];
+        protected override ValueTask<bool> CheckAccessCoreAsync(OperationContext operationContext)
         {
             var headers = operationContext.RequestContext.RequestMessage.Headers;
-
             var headerIndex = headers.FindHeader("X-Api-Key", "http://tempuri.org/");
             if (headerIndex == -1)
             {
-                return false;
+                return new(false);
             }
-            return ValidateApiKey(headers.GetHeader<string>(headerIndex));
+            return new(ValidateApiKey(headers.GetHeader<string>(headerIndex)));
         }
 
         private bool ValidateApiKey(string apiKey)
         {
-            ApiKey obtainedKey = new ApiKey(apiKey);
+            ApiKey obtainedKey = new(apiKey);
             // In practice this method would validate the API key against
             // a secured data store such as a database or a key vault
 

@@ -1,6 +1,8 @@
 using HRDemoReportUI.ServiceCore;
 using HRDemoReportUICore;
 using HRDemoReportUICore.Components;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<UserService>();
 
 // OIDC Authentication
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
 var app = builder.Build();
 
@@ -34,7 +38,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
 app.Run();

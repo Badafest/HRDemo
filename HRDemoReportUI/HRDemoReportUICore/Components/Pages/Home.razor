@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using Microsoft.AspNetCore.Authorization;
 
 @page "/"
 @rendermode InteractiveServer
@@ -6,6 +7,8 @@
 @inject ReportService reportService
 @inject UserService userService
 @inject IJSRuntime JS
+
+@attribute [Authorize]
 
 <PageTitle>Home</PageTitle>
 
@@ -84,15 +87,15 @@
                         </tr>
                         <tr>
                             <td><strong>Annual Salary</strong></td>
-                            <td>$@ReportData.EmployeeReport.AnnualSalary</td>
+                            <td>@FormatCurrency(ReportData.EmployeeReport.AnnualSalary)</td>
                         </tr>
                         <tr>
                             <td><strong>Gross Salary</strong></td>
-                            <td>$@ReportData.EmployeeReport.MonthSalary</td>
+                            <td>@FormatCurrency(ReportData.EmployeeReport.MonthSalary)</td>
                         </tr>
                         <tr>
                             <td><strong>Daily Wage</strong></td>
-                            <td>$@Math.Round(ReportData.EmployeeReport.MonthSalary / ReportData.EmployeeReport.WorkingDaysInMonth, 2)</td>
+                            <td>@FormatCurrency(ReportData.EmployeeReport.MonthSalary / ReportData.EmployeeReport.WorkingDaysInMonth)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -166,19 +169,19 @@
                         @foreach (var payroll in ReportData.PayrollReports)
                         {
                             <tr>
-                                <td>$@payroll.GrossAmount</td>
-                                <td>$@payroll.PreTaxDeduction</td>
-                                <td>$@payroll.TaxDeduction</td>
-                                <td>$@payroll.PostTaxDeduction</td>
-                                <td>$@payroll.NetAmount</td>
+                                <td>@FormatCurrency(payroll.GrossAmount)</td>
+                                <td>@FormatCurrency(payroll.PreTaxDeduction)</td>
+                                <td>@FormatCurrency(payroll.TaxDeduction)</td>
+                                <td>@FormatCurrency(payroll.PostTaxDeduction)</td>
+                                <td>@FormatCurrency(payroll.NetAmount)</td>
                             </tr>
                         }
                         <tr>
-                            <td><strong>$@ReportData.PayrollReports.Sum(p => p.GrossAmount)</strong></td>
-                            <td><strong>$@ReportData.PayrollReports.Sum(p => p.PreTaxDeduction)</strong></td>
-                            <td><strong>$@ReportData.PayrollReports.Sum(p => p.TaxDeduction)</strong></td>
-                            <td><strong>$@ReportData.PayrollReports.Sum(p => p.PostTaxDeduction)</strong></td>
-                            <td><strong>$@ReportData.PayrollReports.Sum(p => p.NetAmount)</strong></td>
+                            <td><strong>@FormatCurrency(ReportData.PayrollReports.Sum(p => p.GrossAmount))</strong></td>
+                            <td><strong>@FormatCurrency(ReportData.PayrollReports.Sum(p => p.PreTaxDeduction))</strong></td>
+                            <td><strong>@FormatCurrency(ReportData.PayrollReports.Sum(p => p.TaxDeduction))</strong></td>
+                            <td><strong>@FormatCurrency(ReportData.PayrollReports.Sum(p => p.PostTaxDeduction))</strong></td>
+                            <td><strong>@FormatCurrency(ReportData.PayrollReports.Sum(p => p.NetAmount))</strong></td>
                         </tr>
                     </tbody>
                 </table>
@@ -297,6 +300,11 @@
                 TimezoneOffset = float.TryParse(timezoneOffset, out float offset) ? offset : 0
             };
         ReportData = reportService.GetReportData(request);
+    }
+
+    private string FormatCurrency(double amount)
+    {
+        return amount.ToString("C", new CultureInfo("en-US"));
     }
     #endregion
 

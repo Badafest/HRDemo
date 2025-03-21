@@ -5,16 +5,10 @@ using System.ServiceModel.Channels;
 
 namespace HRDemoReportUI.ServiceCore
 {
-    public class ReportService
+    public class ReportService(string serviceApiUrl, string serviceApiKey)
     {
-        private readonly string apiKey = null;
-        private readonly string apiUrl = null;
-
-        public ReportService(string serviceApiUrl, string serviceApiKey)
-        {
-            apiKey = serviceApiKey;
-            apiUrl = serviceApiUrl;
-        }
+        private readonly string apiKey = serviceApiKey;
+        private readonly string apiUrl = serviceApiUrl;
 
         public ReportResponse GetReportData(ReportRequest request)
         {
@@ -60,7 +54,7 @@ namespace HRDemoReportUI.ServiceCore
 
             // Inject the API Key into the outgoing message headers
             var scope = new OperationContextScope(client.InnerChannel);
-            var header = MessageHeader.CreateHeader("X-Api-Key", "http://tempuri.org", apiKey);
+            var header = MessageHeader.CreateHeader("X-Api-Key", "http://tempuri.org/", apiKey);
             OperationContext.Current.OutgoingMessageHeaders.Add(header);
 
             // scope should be disposed after the client is used

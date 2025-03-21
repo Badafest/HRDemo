@@ -60,7 +60,7 @@ namespace HRDemoReportUI.Service
 
             // Inject the API Key into the outgoing message headers
             var scope = new OperationContextScope(client.InnerChannel);
-            var header = MessageHeader.CreateHeader("X-Api-Key", "http://tempuri.org", apiKey);
+            var header = MessageHeader.CreateHeader("X-Api-Key", "http://tempuri.org/", apiKey);
             OperationContext.Current.OutgoingMessageHeaders.Add(header);
 
             // scope should be disposed after the client is used

@@ -132,7 +132,7 @@
                     }
                     let availableSpace = pageHeight - margin - data.cursor.y - 0.4;
                     // If remaining space is less than the marginBottom, add a new page
-                    if (availableSpace <= 0 && data.row.index < numRows) {
+                    if (availableSpace <= margin && data.row.index < numRows) {
                         if (data.row.index >= numRows - 1) {
                             return;
                         }
@@ -236,7 +236,13 @@
 
                 // Payrolls Table
                 addSectionHeader(doc, "Payrolls");
-                const payrollData = payrollReports?.length ? payrollReports.map(o => Object.values(o)) : [[]];
+                const payrollData = payrollReports?.length ? payrollReports.map(report => [
+                    report.grossAmount,
+                    report.preTaxDeduction,
+                    report.taxDeduction,
+                    report.postTaxDeduction,
+                    report.netAmount
+                ]) : [[]];
                 const payrollTotals = payrollData.reduce(
                   (accumulator, current) => {
                     return accumulator.map((num, idx) => num + (current[idx] ?? 0));
