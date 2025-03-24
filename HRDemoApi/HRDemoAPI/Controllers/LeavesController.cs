@@ -20,7 +20,7 @@ namespace HRDemoAPI.Controllers
             _hRDemoAPIDb = hRDemoAPIDb;
         }
         // GET api/leaves
-        public IEnumerable<LeaveResponse> Get(int count = default, int page = default, int employeeId = 0, LeaveType? type = null, string startDate = null, string endDate = null)
+        public IEnumerable<LeaveResponse> Get(int count = default, int page = default, int employeeId = 0, string type = null, string startDate = null, string endDate = null)
         {
             var managedDepartments = HttpUtilities.GetManagedDepartments();
 
@@ -31,7 +31,7 @@ namespace HRDemoAPI.Controllers
                 .Where(l => employeeId == default || (l.EmployeeID == employeeId))
                 .Where(l => !isStartDateParsed || l.StartDate >= startDateTime)
                 .Where(l => !isEndDateParsed || l.EndDate <= endDateTime)
-                .Where(l => type == null || l.Type == type)
+                .Where(l => type == null || l.Type.ToString().ToLower() == type.ToLower())
                 .Include("Employee")
                 .Where(l => managedDepartments.Count == 0 || (l.Employee != null && l.Employee.DepartmentID != null && managedDepartments.Contains((int)l.Employee.DepartmentID)))
                 .OrderBy(a => a.LeaveID)

@@ -11,7 +11,7 @@ namespace HRDemoAdmin.Services
         }
         public ApiResponse<IEnumerable<DepartmentResponse>> GetDepartments(string name = "")
         {
-            return Get<IEnumerable<DepartmentResponse>>($"/departments?name={name}");
+            return Get<IEnumerable<DepartmentResponse>>($"/departments", new { name });
         }
         public ApiResponse<DepartmentResponse> GetDepartmentDetails(int id)
         {
@@ -31,7 +31,7 @@ namespace HRDemoAdmin.Services
         }
         public EmployeeResponse GetManagerByEmail(string email) 
         {
-            return Get<List<EmployeeResponse>>($"/employees?email={email}&count=1").Data?.FirstOrDefault();
+            return Get<List<EmployeeResponse>>($"/employees", new { email, count = 1}).Data?.FirstOrDefault();
         }
     }
 }

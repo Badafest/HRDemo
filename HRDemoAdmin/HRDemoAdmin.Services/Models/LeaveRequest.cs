@@ -17,6 +17,7 @@ namespace HRDemoAdmin.Services.Models
         public System.DateTimeOffset endDate { get; set; }
         [Required]
         public string reason { get; set; }
+        public string employeeEmail { get; set; }
         public int employeeId { get; set; }
     }
 }

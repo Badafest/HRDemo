@@ -5,7 +5,7 @@ namespace HRDemoAdmin.Services.Models
     public class LeaveResponse
     {
         public int LeaveID { get; set; }
-        public string Type { get; set; }
+        public LeaveType Type { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
         public string Reason { get; set; }

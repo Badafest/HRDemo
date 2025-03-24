@@ -7,15 +7,15 @@ namespace HRDemoAdmin.Services
     public class EmployeeService : ServiceBase
     {
         public EmployeeService(string baseUrl) : base(baseUrl)
-        { 
+        {
         }
         public ApiResponse<IEnumerable<EmployeeResponse>> GetEmployees(string firstName = "", string lastName = "", string jobTitle = "", string phone = "", string email = "")
         {
-            return Get<IEnumerable<EmployeeResponse>>($"/employees?firstName={firstName}&lastName={lastName}&jobTitle={jobTitle}&phone={phone}&email={email}");
+            return Get<IEnumerable<EmployeeResponse>>($"/employees", new { firstName, lastName, jobTitle, phone, email });
         }
         public ApiResponse<EmployeeResponse> GetEmployeeDetails(int id, bool salary = false)
         {
-            return Get<EmployeeResponse>($"/employees/{id}?salary={salary}");
+            return Get<EmployeeResponse>($"/employees/{id}", new { salary });
         }
         public ApiResponse<EmployeeResponse> DeleteEmployee(int id)
         {
@@ -32,16 +32,16 @@ namespace HRDemoAdmin.Services
 
         public ApiResponse<EmployeeResponse> EmployeeStatus(int id, bool hire = true)
         {
-            return Post<EmployeeResponse>($"/employeestatus/{id}?hire={hire}");
+            return Post<EmployeeResponse>($"/employeestatus/{id}", new { hire });
         }
         public ApiResponse<EmployeeReport> EmployeeReport(int id, int year, int month, double timezoneoffset)
         {
-            return Get<EmployeeReport>($"/employeereport/{id}?year={year}&month={month}&timezoneoffset={timezoneoffset}");
+            return Get<EmployeeReport>($"/employeereport/{id}", new { year, month, timezoneoffset });
         }
 
         public DepartmentResponse GetDepartmentByName(string name)
         {
-            return Get<List<DepartmentResponse>>($"/departments?name={name}&count=1").Data?.FirstOrDefault();
+            return Get<List<DepartmentResponse>>($"/departments", new { name, count = 1 }).Data?.FirstOrDefault();
         }
     }
 }

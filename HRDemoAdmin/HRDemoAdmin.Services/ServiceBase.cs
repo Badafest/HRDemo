@@ -13,9 +13,9 @@ namespace HRDemoAdmin.Services
     public interface IApiResponse
     {
         bool Success { get; set; }
-        JObject ErrorResponse { get; set;}
+        JObject ErrorResponse { get; set; }
     }
-    public class ApiResponse<T>: IApiResponse
+    public class ApiResponse<T> : IApiResponse
     {
         public T Data { get; set; }
         public IDictionary<string, string> Headers { get; set; }
@@ -31,8 +31,19 @@ namespace HRDemoAdmin.Services
             _baseUrl = baseUrl;
         }
 
-        public ApiResponse<T> Get<T>(string endpoint)
+        public ApiResponse<T> Get<T>(string endpoint, dynamic queryObject = null)
         {
+            var queryData = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonConvert.SerializeObject(queryObject));
+            if (queryData != null)
+            {
+                endpoint += "?";
+                int index = 1;
+                foreach (var keyValuePair in queryData)
+                {
+                    endpoint += $"{keyValuePair.Key}={keyValuePair.Value ?? ""}" + (index == queryData.Count ? "" : "&");
+                    index++;
+                }
+            }
             return CallApi<T>(endpoint, HttpMethod.Get);
         }
 
@@ -65,11 +76,11 @@ namespace HRDemoAdmin.Services
                     RequestUri = new Uri(_baseUrl + endpoint),
                     Method = method,
                     Content = content == null ? null : new StringContent(
-                        JsonConvert.SerializeObject(content), 
-                        encoding: Encoding.UTF8, 
+                        JsonConvert.SerializeObject(content),
+                        encoding: Encoding.UTF8,
                         mediaType: "application/json"),
-                }; 
-                HttpResponseMessage response =  Task.Run(() => client.SendAsync(request)).Result;
+                };
+                HttpResponseMessage response = Task.Run(() => client.SendAsync(request)).Result;
                 string json = Task.Run(() => response.Content.ReadAsStringAsync()).Result;
 
                 var headersDictionary = new Dictionary<string, string>();
