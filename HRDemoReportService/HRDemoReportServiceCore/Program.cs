@@ -20,7 +20,12 @@ app.UseServiceModel(serviceBuilder =>
         options.DebugBehavior.IncludeExceptionDetailInFaults = builder.Environment.IsEnvironment("Local");
     });
 
-    BindingInfo[] bindingInfo = [new(), new() { Binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport) }];
+    List<BindingInfo> bindingInfo = [new()];
+
+    if (builder.Configuration["UseHttps"] == "true")
+    {
+        bindingInfo.Add(new() { Binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport) });
+    }
 
     foreach (var binding in bindingInfo)
     {
