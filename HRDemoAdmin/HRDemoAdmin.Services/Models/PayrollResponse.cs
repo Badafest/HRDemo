@@ -1,4 +1,7 @@
-﻿namespace HRDemoAdmin.Services.Models
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace HRDemoAdmin.Services.Models
 {
     public class PayrollResponse
     {
@@ -12,10 +15,20 @@
 
     public class PayrollResponseSalary
     {
+        [DisplayName("Gross Amount")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public double GrossAmount { get; set; }
+        [DisplayName("Pre Tax Deduction")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public double PreTaxDeduction { get; set; }
+        [DisplayName("Tax Deduction")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public double TaxDeduction { get; set; }
+        [DisplayName("Post Tax Deduction")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public double PostTaxDeduction { get; set; }
+        [DisplayName("Net Amount")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public double NetAmount { get; set; }
     }
 }

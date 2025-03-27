@@ -22,6 +22,13 @@ namespace HRDemoAdmin.Controllers
                 var employee = _leaveService.GetEmployeeByEmail(employeeEmail);
                 employeeId = employee?.EmployeeID ?? -1;
             }
+
+            var minStartDate = DateTimeOffset.Now.Subtract(new TimeSpan(2 * 365, 0, 0, 0));
+            var maxEndDate = DateTimeOffset.Now;
+
+            startDate = (startDate != null && startDate > minStartDate) ? startDate : minStartDate;
+            endDate = (endDate != null && endDate < maxEndDate) ? endDate : maxEndDate;
+
             var response = _leaveService.GetLeaves(employeeId, type, startDate, endDate);
             return HandleApiResponse(response, response.Data) ?? View(response.Data);
         }

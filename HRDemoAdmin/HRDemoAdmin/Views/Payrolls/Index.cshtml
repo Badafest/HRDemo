@@ -1,7 +1,75 @@
 ﻿
+@model IEnumerable<HRDemoAdmin.Services.Models.PayrollResponse>
 @{
     ViewData["Title"] = "Payrolls";
+    var grid = new WebGrid(source: Model, canPage: true, rowsPerPage: 3);
+
+    var yearOptions = new int[] { DateTime.Now.Year, DateTime.Now.Year - 1 }
+        .Select(e => new SelectListItem
+        {
+            Text = e.ToString(),
+            Value = e.ToString()
+        });
+
+    var monthOptions = System.Globalization.DateTimeFormatInfo.InvariantInfo.MonthNames
+        .Where(m => !string.IsNullOrEmpty(m))
+        .Select((m, i) => new SelectListItem
+        {
+            Text = m,
+            Value = (i + 1).ToString()
+        });
 }
 
-<h2 class="title">Payrolls</h2>
+<div class="my-2 d-flex justify-content-between align-items-center">
+    <h2 class="title">Payrolls</h2>
+    @Html.ActionLink("Create New Payroll", "Create")
+</div>
+
+<form method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-auto">
+        <label for="employeeEmail" class="col-form-label">Employee:</label>
+        <input type="email" id="employeeEmail" name="employeeEmail" class="form-control" value="@Context.Request.QueryString.Get("employeeEmail")">
+    </div>
+    <div class="col-auto">
+        <label for="type" class="col-form-label">Year:</label>
+        @Html.DropDownList("year", yearOptions, new { @class = "form-control" })
+    </div>
+    <div class="col-auto">
+        <label for="type" class="col-form-label">Month:</label>
+        @Html.DropDownList("month", new SelectList(monthOptions, "Value", "Text", DateTime.Now.Month.ToString()), new { @class = "form-control" })
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+@grid.GetHtml(
+    tableStyle: "table table-bordered table-striped",
+    headerStyle: "header sortable-header",
+    rowStyle: "table-row",
+    columns: grid.Columns(
+        grid.Column("PayrollID", "ID", format: item => new HtmlString($"<a href='/Payrolls/Details/{item.PayrollId}'>Payroll #{item.PayrollId}</a>"), style: "column-small", canSort: true),
+        grid.Column("Employee", format: item => new HtmlString(
+            item.Employee == null ? "<span>-</span>" :
+            $"<a href='/Employees/Details/{item.Employee.EmployeeID}'>" +
+            $"{item.Employee.FirstName} {item.Employee.LastName}" +
+            $"</a> " +
+            $"<br/>{item.Employee.Email}"
+            ), style: "column-medium", canSort: false),
+        grid.Column(header: "Year/Month", format: item => item.Year.ToString() + " " + monthOptions.First(m => m.Value == item.Month.ToString()).Text, style: "column-small", canSort: false),
+        grid.Column("Salary.GrossAmount", "Gross Amount", format: item => item.Salary.GrossAmount.ToString("C"), style: "column-small", canSort: false),
+        grid.Column("Salary.PreTaxDeduction", "Pre Tax Deduction", format: item => item.Salary.PreTaxDeduction.ToString("C"), style: "column-small", canSort: false),
+        grid.Column("Salary.TaxDeduction", "Tax Deduction", format: item => item.Salary.TaxDeduction.ToString("C"), style: "column-small", canSort: false),
+        grid.Column("Salary.PostTaxDeduction", "Post Tax Deduction", format: item => item.Salary.PostTaxDeduction.ToString("C"), style: "column-small", canSort: false),
+        grid.Column("Salary.NetAmount", "Net Amount", format: item => item.Salary.NetAmount.ToString("C"), style: "column-small", canSort: false)
+    ),
+    footerStyle: "hidden"
+)
+
+<!-- Custom Pagination -->
+<div class="custom-pagination">
+    @grid.Pager(WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                previousText: "← Prev",
+                nextText: "Next →")
+</div>
 

@@ -1,0 +1,141 @@
+﻿@model HRDemoAdmin.Services.Models.PayrollRequest
+
+@{
+    var yearOptions = new int[] { DateTime.Now.Year, DateTime.Now.Year - 1 }
+    .Select(e => new SelectListItem
+    {
+        Text = e.ToString(),
+        Value = e.ToString()
+    });
+
+    var monthOptions = System.Globalization.DateTimeFormatInfo.InvariantInfo.MonthNames
+        .Where(m => !string.IsNullOrEmpty(m))
+        .Select((m, i) => new SelectListItem
+        {
+            Text = m,
+            Value = (i + 1).ToString()
+        });
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Create New Payroll</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row g-2 mb-2">
+            <div class="form-group col-md-3">
+                @Html.LabelFor(model => model.employeeEmail, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.employeeEmail, new { htmlAttributes = new { @class = "form-control", @id = "employee-email" } })
+                    @Html.ValidationMessageFor(model => model.employeeEmail, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-1">
+                @Html.LabelFor(model => model.year, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.DropDownListFor(model => model.year, yearOptions, new { @class = "form-control", @id = "selected-year" })
+                    @Html.ValidationMessageFor(model => model.year, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-2">
+                @Html.LabelFor(model => model.month, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.DropDownListFor(model => model.month, new SelectList(monthOptions, "Value", "Text", DateTime.Now.Month.ToString()), new { @class = "form-control", @id = "selected-month" })
+                    @Html.ValidationMessageFor(model => model.month, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="reportBtn">Get Employee Report</button>
+        <hr />
+        <div id="employeeReport"></div>
+        <hr />
+
+        <h6>Salary</h6>
+
+        <div class="mx-4 mt-1">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.salary.grossAmount, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.salary.grossAmount, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                    @Html.ValidationMessageFor(model => model.salary.grossAmount, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.salary.preTaxDeduction, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.salary.preTaxDeduction, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                    @Html.ValidationMessageFor(model => model.salary.preTaxDeduction, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.salary.taxDeduction, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.salary.taxDeduction, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                    @Html.ValidationMessageFor(model => model.salary.taxDeduction, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.salary.postTaxDeduction, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.salary.postTaxDeduction, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                    @Html.ValidationMessageFor(model => model.salary.postTaxDeduction, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mt-4">
+            <div class="col-md-offset-2">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="mt-2">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script>
+    $(document).ready(function () {
+        const reportElem = $("#employeeReport")
+        $("#reportBtn").on("click", function () {
+            const email = $("#employee-email").val();
+            const year = $("#selected-year").val();
+            const month = $("#selected-month").val();
+            const offset = new Date().getTimezoneOffset() * -1;
+            $.ajax({
+                url: `/Payrolls/EmployeeReport?email=${email}&year=${year}&month=${month}&offset=${offset}`,
+                type: "POST",
+                success: function (response) {
+                    // Handle success response
+                    const reportHtml = `
+                    <p class="m-0">Employee: ${response.FirstName} ${response.LastName} (${response.State}, ${response.Country})</p>
+                    <p class="m-0">Annual Salary: ${new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD'
+                    }).format(response.AnnualSalary)}</p>
+                    <p class="m-0">Present Days: ${response.PresentDays}</p>
+                    <p class="m-0">Late Days: ${response.LateDays}</p>
+                    <p class="m-0">Leave Days: ${response.LeaveDays}
+                    (Sick: ${response.SickLeave}, Casual: ${response.CasualLeave}, Parental: ${response.ParentalLeave}, Bereavement: ${response.BereavementLeave}, Unpaid: ${response.UnpaidLeave})</p>
+                   `;
+                    reportElem.html(reportHtml)
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    $("html").html(xhr.responseText);
+                }
+            });
+        })
+    });
+</script>

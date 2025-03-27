@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttendanceService.cs" />
+    <Compile Include="PayrollService.cs" />
     <Compile Include="LeaveService.cs" />
     <Compile Include="EmployeeService.cs" />
     <Compile Include="Models\*.cs" />

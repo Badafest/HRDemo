@@ -34,10 +34,6 @@ namespace HRDemoAdmin.Services
         {
             return Post<EmployeeResponse>($"/employeestatus/{id}?hire={hire}");
         }
-        public ApiResponse<EmployeeReport> EmployeeReport(int id, int year, int month, double timezoneoffset)
-        {
-            return Get<EmployeeReport>($"/employeereport/{id}", new { year, month, timezoneoffset });
-        }
 
         public DepartmentResponse GetDepartmentByName(string name)
         {

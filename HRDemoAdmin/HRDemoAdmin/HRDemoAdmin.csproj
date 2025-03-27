@@ -191,6 +191,10 @@
     <Content Include="Views\Leaves\Delete.cshtml" />
     <Content Include="Views\Leaves\Details.cshtml" />
     <Content Include="Views\Leaves\Edit.cshtml" />
+    <Content Include="Views\Payrolls\Create.cshtml" />
+    <Content Include="Views\Payrolls\Delete.cshtml" />
+    <Content Include="Views\Payrolls\Details.cshtml" />
+    <Content Include="Views\Payrolls\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

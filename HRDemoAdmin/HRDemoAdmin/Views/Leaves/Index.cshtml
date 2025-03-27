@@ -46,7 +46,7 @@
     headerStyle: "header sortable-header",
     rowStyle: "table-row",
     columns: grid.Columns(
-        grid.Column("LeaveID", "ID", format: item => new HtmlString($"<a href='./Leaves/Details/{item.LeaveId}'>Leave #{item.LeaveId}</a>"), style: "column-small", canSort: true),
+        grid.Column("LeaveID", "ID", format: item => new HtmlString($"<a href='/Leaves/Details/{item.LeaveId}'>Leave #{item.LeaveId}</a>"), style: "column-small", canSort: true),
         grid.Column("Employee", format: item => new HtmlString(
             item.Employee == null ? "<span>-</span>" :
             $"<a href='/Employees/Details/{item.Employee.EmployeeID}'>" +
