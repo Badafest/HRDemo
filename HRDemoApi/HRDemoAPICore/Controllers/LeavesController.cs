@@ -27,7 +27,7 @@ namespace HRDemoAPICore.Controllers
                 .Where(l => employeeId == default || (l.EmployeeID == employeeId))
                 .Where(l => !isStartDateParsed || l.StartDate >= startDateTime)
                 .Where(l => !isEndDateParsed || l.EndDate <= endDateTime)
-                .Where(l => type == null || l.Type.ToString().ToLower() == type.ToLower())
+                .Where(l => string.IsNullOrEmpty(type) || l.Type.ToString().Equals(type, StringComparison.CurrentCultureIgnoreCase))
                 .Include("Employee")
                 .Where(l => managedDepartments.Count == 0 || (l.Employee != null && l.Employee.DepartmentID != null && managedDepartments.Contains((int)l.Employee.DepartmentID)))
                 .OrderBy(a => a.LeaveID)

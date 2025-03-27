@@ -33,7 +33,7 @@ namespace HRDemoAdmin.Services
 
         public ApiResponse<LeaveResponse> LeaveStatus(int id, bool approve = true)
         {
-            return Post<LeaveResponse>($"/leavestatus/{id}", new { approve });
+            return Post<LeaveResponse>($"/leavestatus/{id}?approve={approve}");
         }
         public EmployeeResponse GetEmployeeByEmail(string email)
         {

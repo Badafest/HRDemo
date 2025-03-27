@@ -18,6 +18,10 @@ a{
     text-transform: capitalize;
 }
 
+textarea {
+    max-height: 30vh;
+}
+
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */

@@ -15,6 +15,7 @@ namespace HRDemoAdmin.Controllers
             base.OnActionExecuting(filterContext);
         }
 
+        [NonAction]
         public ActionResult HandleApiResponse<T>(IApiResponse response, T model)
         {
             if (!response.Success)
@@ -29,6 +30,7 @@ namespace HRDemoAdmin.Controllers
                     }
                     return View(model);
                 }
+                Response.StatusCode = response.ErrorResponse["StatusCode"].ToObject<int>();
                 return View("Error", response.ErrorResponse);
             }
             return null;

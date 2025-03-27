@@ -1,27 +1,29 @@
-﻿@model HRDemoAdmin.Services.Models.EmployeeResponse
+﻿@model HRDemoAdmin.Services.Models.LeaveResponse
 
 @{
-    ViewData["Title"] = "Employee Details";
+    ViewData["Title"] = "Leave Details";
 }
 
 <div>
-    <h4>Employee Details #@Model.EmployeeID</h4>
+    <h4>Leave Details #@Model.LeaveID</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>Name</dt>
+        <dt>Employee</dt>
 
         <dd>
-            @Html.DisplayFor(model => model.FirstName)
-            <span> </span>
-            @Html.DisplayFor(model => model.LastName)
+            <a href="/Employees/Details/@Model.Employee.EmployeeID">
+                @Html.DisplayFor(model => model.Employee.FirstName)
+                <span> </span>
+                @Html.DisplayFor(model => model.Employee.LastName) (@Html.DisplayFor(model => model.Employee.Email))
+            </a>
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.JobTitle)
+            @Html.DisplayNameFor(model => model.Type)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.JobTitle)
+            @Html.DisplayFor(model => model.Type) Leave
         </dd>
 
         <dt>
@@ -30,65 +32,29 @@
 
         <dd>
             @Html.DisplayFor(model => model.Status)
-            <button id="changeStatusBtn" class="btn btn-sm @Html.Raw(Model.Status == "Active" ? "btn-danger" : "btn-success")" data-status="@Model.Status">@(Model.Status == "Active" ? "Terminate" : "Activate")</button>
+            <button id="changeStatusBtn" class="btn btn-sm @Html.Raw(Model.Status == "Approved" ? "btn-danger" : "btn-success")" data-status="@Model.Status">@(Model.Status == "Approved" ? "Reject" : "Approve")</button>
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.StartDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Email)
+            @Model.StartDate.ToString("M/d/yyyy h:mm tt")
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Phone)
+            @Html.DisplayNameFor(model => model.EndDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Phone)
+            @Model.EndDate.ToString("M/d/yyyy h:mm tt")
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Salary)
-        </dt>
-
-        <dd>
-            $@Html.DisplayFor(model => model.Salary)
-        </dd>
-
-        @if (Model.Department != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.Department)
-            </dt>
-
-            <dd>
-                <a href="/Departments/Details/@Model.Department.DepartmentID">@Html.DisplayFor(model => model.Department.Name)</a>
-            </dd>
-        }
-
-        @if (Model.Address != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.Address)
-            </dt>
-
-            <dd>
-                <address>
-                    <p class="m-0">@Model.Address.Line1</p>
-                    <p class="m-0">@Model.Address.Line2</p>
-                    <p class="m-0">@Model.Address.City</p>
-                    <p class="m-0">@Model.Address.State, @Model.Address.Country</p>
-                </address>
-            </dd>
-        }
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeID }) |
-    @Html.ActionLink("Delete", "Delete", new { id = Model.EmployeeID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.LeaveID }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.LeaveID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 
@@ -96,7 +62,7 @@
     $(document).ready(function () {
         $("#changeStatusBtn").click(function () {
             $.ajax({
-                url: `/Employees/EmployeeStatus/${@Model.EmployeeID}?hire=${$(this).data("status")!="Active"}`,
+                url: `/Leaves/LeaveStatus/${@Model.LeaveID}?approve=${$(this).data("status")!="Approved"}`,
                 type: "POST",
                 success: function (response) {
                     // Handle success response

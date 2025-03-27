@@ -11,7 +11,7 @@ namespace HRDemoAdmin.Services.Models
         public string firstName { get; set; }
         [DisplayName("Last Name"), Required]
         public string lastName { get; set; }
-        [EmailAddress, Required]
+        [Email, Required]
         public string email { get; set; }
         [Phone, Required]
         public string phone { get; set; }

@@ -26,7 +26,7 @@
     </div>
     <div class="col-auto">
         <label for="type" class="col-form-label">Type:</label>
-        @Html.DropDownList("type", typeOptions, "Type:", new { @class = "form-control" })
+        @Html.DropDownList("type", typeOptions, "-- Select Type --", new { @class = "form-control" })
     </div>
     <div class="col-auto">
         <label for="startDate" class="col-form-label">Start Date:</label>
@@ -46,16 +46,18 @@
     headerStyle: "header sortable-header",
     rowStyle: "table-row",
     columns: grid.Columns(
-        grid.Column("LeaveID", format: item => new HtmlString($"<a href='./Leaves/Details/{item.LeaveId}'>Leave #{item.LeaveId}</a>"), style: "column-small", canSort: true),
+        grid.Column("LeaveID", "ID", format: item => new HtmlString($"<a href='./Leaves/Details/{item.LeaveId}'>Leave #{item.LeaveId}</a>"), style: "column-small", canSort: true),
         grid.Column("Employee", format: item => new HtmlString(
             item.Employee == null ? "<span>-</span>" :
             $"<a href='/Employees/Details/{item.Employee.EmployeeID}'>" +
             $"{item.Employee.FirstName} {item.Employee.LastName}" +
-            $"<br/>{item.Employee.Email}" +
-            $"</a>"), style: "column-medium", canSort: true),
-        grid.Column("Type", style: "column-medium", canSort: false),
-        grid.Column("StartDate", style: "column-medium", canSort: false),
-        grid.Column("EndDate", style: "column-medium", canSort: false)
+            $"</a> "+
+            $"<br/>{item.Employee.Email}"
+            ), style: "column-medium", canSort: false),
+        grid.Column("Type", style: "column-small", canSort: true),
+        grid.Column("StartDate", "Start Date", format: item => item.StartDate.ToString("M/d/yyyy h:mm tt"), style: "column-medium", canSort: true),
+        grid.Column("EndDate", "End Date", format: item => item.EndDate.ToString("M/d/yyyy h:mm tt"), style: "column-medium", canSort: true),
+        grid.Column("Reason", style: "column-large", canSort: false)
     ),
     footerStyle: "hidden"
 )

@@ -20,7 +20,7 @@ namespace HRDemoAdmin.Controllers
             if (!string.IsNullOrEmpty(employeeEmail))
             {
                 var employee = _leaveService.GetEmployeeByEmail(employeeEmail);
-                employeeId = employee?.EmployeeID ?? 0;
+                employeeId = employee?.EmployeeID ?? -1;
             }
             var response = _leaveService.GetLeaves(employeeId, type, startDate, endDate);
             return HandleApiResponse(response, response.Data) ?? View(response.Data);
@@ -79,7 +79,6 @@ namespace HRDemoAdmin.Controllers
         {
             LeaveRequest request = new LeaveRequest
             {
-                employeeId = leaveResponse.Employee.EmployeeID,
                 reason = leaveResponse.Reason,
                 startDate = leaveResponse.StartDate,
                 endDate = leaveResponse.EndDate,
@@ -107,9 +106,9 @@ namespace HRDemoAdmin.Controllers
 
         // POST: Leaves/LeaveStatus/{id}
         [HttpPost]
-        public ActionResult LeaveStatus(int id, bool hire = true)
+        public ActionResult LeaveStatus(int id, bool approve = true)
         {
-            var response = _leaveService.LeaveStatus(id, hire);
+            var response = _leaveService.LeaveStatus(id, approve);
             return HandleApiResponse(response, response.Data) ?? new JsonResult() { Data = response };
         }
     }

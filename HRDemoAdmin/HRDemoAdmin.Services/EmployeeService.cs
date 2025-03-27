@@ -32,7 +32,7 @@ namespace HRDemoAdmin.Services
 
         public ApiResponse<EmployeeResponse> EmployeeStatus(int id, bool hire = true)
         {
-            return Post<EmployeeResponse>($"/employeestatus/{id}", new { hire });
+            return Post<EmployeeResponse>($"/employeestatus/{id}?hire={hire}");
         }
         public ApiResponse<EmployeeReport> EmployeeReport(int id, int year, int month, double timezoneoffset)
         {

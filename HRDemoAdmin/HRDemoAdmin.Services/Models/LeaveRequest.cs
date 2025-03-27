@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAnnotationsExtensions;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace HRDemoAdmin.Services.Models
 {
@@ -12,11 +14,15 @@ namespace HRDemoAdmin.Services.Models
     }
     public class LeaveRequest
     {
+        [DisplayName("Leave Type")]
         public LeaveType type { get; set; }
+        [DisplayName("Start Date")]
         public System.DateTimeOffset startDate { get; set; }
+        [DisplayName("End Date")]
         public System.DateTimeOffset endDate { get; set; }
         [Required]
         public string reason { get; set; }
+        [DisplayName("Employee Email"), Email]
         public string employeeEmail { get; set; }
         public int employeeId { get; set; }
     }

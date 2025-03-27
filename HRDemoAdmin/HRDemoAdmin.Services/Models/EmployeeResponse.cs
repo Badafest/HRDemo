@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using DataAnnotationsExtensions;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace HRDemoAdmin.Services.Models
 {
@@ -16,6 +18,7 @@ namespace HRDemoAdmin.Services.Models
         public string FirstName { get; set; }
         [DisplayName("Last Name")]
         public string LastName { get; set; }
+        [Email]
         public string Email { get; set; }
         public string Phone { get; set; }
         [DisplayName("Job Title")]

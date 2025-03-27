@@ -24,10 +24,7 @@ builder.Services.AddDbContext<HRDemoApiContext>(options => {
 
 builder.Services.AddScoped<HRDemoAuthorizeFilter>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(options =>
-    {
-        builder.Configuration.Bind("AzureAd", options);
-    }, options => { builder.Configuration.Bind("AzureAd", options); });
+    .AddMicrosoftIdentityWebApi(builder.Configuration);
 
 // Configure model state validation filter, null string binder and string enum converter
 builder.Services.AddControllers(options =>
