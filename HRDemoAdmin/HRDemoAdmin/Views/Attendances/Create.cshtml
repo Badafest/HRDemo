@@ -1,0 +1,56 @@
+﻿@model HRDemoAdmin.Services.Models.AttendanceRequest
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Create New Attendance</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group col-md-8">
+            @Html.LabelFor(model => model.employeeEmail, htmlAttributes: new { @class = "control-label" })
+            <div>
+                @Html.EditorFor(model => model.employeeEmail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.employeeEmail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "control-label" })
+            <div>
+                @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row g-2 mb-2">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.checkIn, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.checkIn, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+                    @Html.ValidationMessageFor(model => model.checkIn, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.checkOut, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.checkOut, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+                    @Html.ValidationMessageFor(model => model.checkOut, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mt-2">
+            <div class="col-md-offset-2">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="mt-2">
+    @Html.ActionLink("Back to List", "Index")
+</div>
