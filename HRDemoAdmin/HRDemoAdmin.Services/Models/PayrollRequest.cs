@@ -10,6 +10,7 @@ namespace HRDemoAdmin.Services.Models
         public short month { get; set; }
         [Required]
         public short year { get; set; }
+        public int offset { get; set; }
         [Email]
         [DisplayName("Employee Email")]
         public string employeeEmail { get; set; }

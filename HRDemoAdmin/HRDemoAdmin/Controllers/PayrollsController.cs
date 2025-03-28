@@ -43,7 +43,7 @@ namespace HRDemoAdmin.Controllers
 
         // POST: Payrolls/Edit/{id}
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Create(PayrollRequest payrollRequest)
+        public ActionResult Create(PayrollRequest payrollRequest, string buttonType)
         {
             if (string.IsNullOrEmpty(payrollRequest.employeeEmail))
             {
@@ -59,6 +59,13 @@ namespace HRDemoAdmin.Controllers
             }
 
             payrollRequest.employeeId = employee.EmployeeID;
+
+            if (buttonType == "Report")
+            {
+                var reportResponse = _payrollService.EmployeeReport(payrollRequest.employeeId, payrollRequest.year, payrollRequest.month, payrollRequest.offset);
+                ViewBag.reportData = reportResponse.Data;
+                return View(payrollRequest);
+            }
 
             var response = _payrollService.CreatePayroll(payrollRequest);
             return HandleApiResponse(response, payrollRequest) ?? RedirectToAction("Details", new { id = response.Data.PayrollID });
@@ -114,18 +121,6 @@ namespace HRDemoAdmin.Controllers
         {
             var response = _payrollService.PayrollStatus(id, processed);
             return HandleApiResponse(response, response.Data) ?? new JsonResult() { Data = response };
-        }
-
-        [HttpPost]
-        public ActionResult EmployeeReport(string email, int year, int month, float offset)
-        {
-            if (string.IsNullOrEmpty(email))
-            {
-                throw new ArgumentNullException($"Employee email is required");
-            }
-            var employee = _payrollService.GetEmployeeByEmail(email) ?? throw new ArgumentException($"Employee not found with email: {email}");
-            var response = _payrollService.EmployeeReport(employee.EmployeeID, year, month, offset);
-            return HandleApiResponse(response, response.Data) ?? new JsonResult() { Data = response.Data };
         }
     }
 }
