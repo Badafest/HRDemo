@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoAdmin", "HRDemoAdmin\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoAdmin.Services", "HRDemoAdmin.Services\HRDemoAdmin.Services.csproj", "{4C89038D-C1D4-41E4-80F4-41353B78402B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRDemoAdmin.ServicesCore", "HRDemoAdmin.ServicesCore\HRDemoAdmin.ServicesCore.csproj", "{957B43CE-469B-90E5-00BA-1C00A2627B8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4C89038D-C1D4-41E4-80F4-41353B78402B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C89038D-C1D4-41E4-80F4-41353B78402B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C89038D-C1D4-41E4-80F4-41353B78402B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{957B43CE-469B-90E5-00BA-1C00A2627B8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{957B43CE-469B-90E5-00BA-1C00A2627B8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{957B43CE-469B-90E5-00BA-1C00A2627B8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{957B43CE-469B-90E5-00BA-1C00A2627B8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
