@@ -2,7 +2,7 @@
 @model IEnumerable<HRDemoAdmin.Services.Models.PayrollResponse>
 @{
     ViewData["Title"] = "Payrolls";
-    var grid = new WebGrid(source: Model, canPage: true, rowsPerPage: 3);
+    var grid = new WebGrid(source: Model, canPage: true, rowsPerPage: 10);
 
     var yearOptions = new int[] { DateTime.Now.Year, DateTime.Now.Year - 1 }
         .Select(e => new SelectListItem

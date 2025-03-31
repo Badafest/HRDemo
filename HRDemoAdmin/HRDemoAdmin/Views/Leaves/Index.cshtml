@@ -2,7 +2,7 @@
 @model IEnumerable<HRDemoAdmin.Services.Models.LeaveResponse>
 @{
     ViewData["Title"] = "Leaves";
-    var grid = new WebGrid(source: Model, canPage: true, rowsPerPage: 3);
+    var grid = new WebGrid(source: Model, canPage: true, rowsPerPage: 10);
 
     var typeOptions = Enum
         .GetValues(typeof(LeaveType))
