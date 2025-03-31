@@ -6,7 +6,7 @@ namespace HRDemoAdmin.Services
 {
     public class DepartmentService : ServiceBase
     {
-        public DepartmentService(string baseUrl) : base(baseUrl)
+        public DepartmentService(string baseUrl, string bearerToken = null) : base(baseUrl, bearerToken)
         { 
         }
         public ApiResponse<IEnumerable<DepartmentResponse>> GetDepartments(string name = "")

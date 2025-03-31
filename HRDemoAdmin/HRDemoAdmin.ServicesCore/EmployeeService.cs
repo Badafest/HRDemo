@@ -6,7 +6,7 @@ namespace HRDemoAdmin.Services
 {
     public class EmployeeService : ServiceBase
     {
-        public EmployeeService(string baseUrl) : base(baseUrl)
+        public EmployeeService(string baseUrl, string bearerToken = null) : base(baseUrl, bearerToken)
         {
         }
         public ApiResponse<IEnumerable<EmployeeResponse>> GetEmployees(string firstName = "", string lastName = "", string jobTitle = "", string phone = "", string email = "")

@@ -7,7 +7,7 @@ namespace HRDemoAdmin.Services
 {
     public class LeaveService : ServiceBase
     {
-        public LeaveService(string baseUrl) : base(baseUrl)
+        public LeaveService(string baseUrl, string bearerToken = null) : base(baseUrl, bearerToken)
         { 
         }
         public ApiResponse<IEnumerable<LeaveResponse>> GetLeaves(int employeeId, string type, DateTimeOffset? startDate, DateTimeOffset? endDate)

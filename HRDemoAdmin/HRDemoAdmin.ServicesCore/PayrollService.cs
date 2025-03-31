@@ -6,7 +6,7 @@ namespace HRDemoAdmin.Services
 {
     public class PayrollService : ServiceBase
     {
-        public PayrollService(string baseUrl) : base(baseUrl)
+        public PayrollService(string baseUrl, string bearerToken = null) : base(baseUrl, bearerToken)
         { 
         }
         public ApiResponse<IEnumerable<PayrollResponse>> GetPayrolls(int employee, int year, int month)

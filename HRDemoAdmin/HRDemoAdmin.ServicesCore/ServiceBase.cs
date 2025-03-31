@@ -25,10 +25,12 @@ namespace HRDemoAdmin.Services
     public class ServiceBase
     {
         private readonly string _baseUrl;
+        private readonly string _bearerToken;
 
-        public ServiceBase(string baseUrl)
+        public ServiceBase(string baseUrl, string bearerToken = null)
         {
             _baseUrl = baseUrl;
+            _bearerToken = bearerToken;
         }
 
         public ApiResponse<T> Get<T>(string endpoint, object queryObject = null)
@@ -67,10 +69,17 @@ namespace HRDemoAdmin.Services
         }
         private ApiResponse<T> CallApi<T>(string endpoint, HttpMethod method, object content = null)
         {
-            using (HttpClientHandler handler = new HttpClientHandler { UseDefaultCredentials = true }) // Pass Windows credentials
+            using (HttpClientHandler handler = new HttpClientHandler { 
+                UseDefaultCredentials = string.IsNullOrEmpty(_bearerToken) 
+            }) // Pass Windows credentials
+
             using (HttpClient client = new HttpClient(handler))
             {
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                if (!string.IsNullOrEmpty(_bearerToken))
+                {
+                    client.DefaultRequestHeaders.Add("Authorization", _bearerToken);
+                }
                 HttpRequestMessage request = new HttpRequestMessage
                 {
                     RequestUri = new Uri(_baseUrl + endpoint),
@@ -99,7 +108,7 @@ namespace HRDemoAdmin.Services
                 }
                 else
                 {
-                    apiResponse.ErrorResponse = JsonConvert.DeserializeObject<JObject>(json);
+                    apiResponse.ErrorResponse = JsonConvert.DeserializeObject<JObject>(json) ?? new JObject();
                     apiResponse.ErrorResponse.Add("StatusCode", JToken.FromObject(response.StatusCode));
                 }
                 return apiResponse;

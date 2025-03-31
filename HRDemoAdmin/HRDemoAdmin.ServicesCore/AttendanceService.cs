@@ -7,7 +7,7 @@ namespace HRDemoAdmin.Services
 {
     public class AttendanceService : ServiceBase
     {
-        public AttendanceService(string baseUrl) : base(baseUrl)
+        public AttendanceService(string baseUrl, string bearerToken = null) : base(baseUrl, bearerToken)
         { 
         }
         public ApiResponse<IEnumerable<AttendanceResponse>> GetAttendances(int employeeId, DateTimeOffset? startDate, DateTimeOffset? endDate)
