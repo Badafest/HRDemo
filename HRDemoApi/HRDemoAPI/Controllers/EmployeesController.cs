@@ -10,7 +10,7 @@ using System.Web.Http;
 
 namespace HRDemoAPI.Controllers
 {
-    [HRDemoAuthorize]
+    //[HRDemoAuthorize]
     public class EmployeesController : ApiController
     {
         private readonly HRDemoApiDbContainer _hRDemoAPIDb;

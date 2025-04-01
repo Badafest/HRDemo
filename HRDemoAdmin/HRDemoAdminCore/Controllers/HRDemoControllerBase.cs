@@ -9,21 +9,24 @@ namespace HRDemoAdminCore.Controllers
 {
     [Authorize]
     [AuthorizeForScopes(ScopeKeySection = "AuthScopes")]
-    public abstract class ControllerBase(IConfiguration configuration, IAuthorizationHeaderProvider authHeaderProvider) : Controller
+    public abstract class HRDemoControllerBase(IConfiguration configuration, IAuthorizationHeaderProvider authHeaderProvider) : Controller
     {
         private readonly IConfiguration _configuration = configuration;
         private readonly IAuthorizationHeaderProvider _authHeaderProvider = authHeaderProvider;
+
+        public string? BearerToken
+        {
+            get
+            {
+                var authScopes = _configuration["AuthScopes"]?.Split(",") ?? [];
+                return _authHeaderProvider.CreateAuthorizationHeaderForUserAsync(authScopes).Result;
+            }
+        }
+
+        public readonly string? ApiBaseUrl = configuration["HRDemoApiBaseUrl"];
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (filterContext.HttpContext?.User?.Identity?.IsAuthenticated != true)
-            {
-                base.OnActionExecuting(filterContext);
-                return;
-            }
-            var apiBaseUrl = _configuration["HRDemoApiBaseUrl"];
-            var authScopes = _configuration["AuthScopes"]?.Split(",") ?? [];
-            var bearerToken = _authHeaderProvider.CreateAuthorizationHeaderForUserAsync(authScopes).Result;
-            var userResponse = new UserService(apiBaseUrl, bearerToken).GetUserDetails();
+            var userResponse = new UserService(ApiBaseUrl, BearerToken).GetUserDetails();
             ViewBag.UserName = userResponse.Name;
             ViewBag.UserRole = userResponse.Role;
             base.OnActionExecuting(filterContext);

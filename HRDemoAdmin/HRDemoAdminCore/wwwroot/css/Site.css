@@ -65,8 +65,7 @@ textarea {
     margin-top: 20px;
 }
 
-.custom-pagination a,
-.custom-pagination span {
+.custom-pagination button {
     display: inline-block;
     padding: 8px 15px;
     margin: 0 5px;
@@ -76,23 +75,23 @@ textarea {
     color: #007bff;
 }
 
-.custom-pagination span{
+.custom-pagination button {
     cursor: not-allowed;
     color: #333;
 }
 
-.custom-pagination a:hover {
+.custom-pagination button:hover {
     background-color: #f1f1f1;
     color: #007bff;
 }
 
-.custom-pagination .current-page {
+.custom-pagination .active {
     background-color: #007bff;
     color: #fff;
     font-weight: bold;
 }
 
-.custom-pagination .disabled {
+.custom-pagination button[disabled] {
     color: #aaa;
     pointer-events: none;
 }

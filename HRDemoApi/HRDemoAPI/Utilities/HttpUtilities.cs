@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.Remoting.Contexts;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Http;
@@ -47,7 +48,7 @@ namespace HRDemoAPI.Utilities
             int count = queryCount == default ? totalCount : queryCount;
             int page = queryPage == default ? 1 : queryPage;
             HttpContext.Current?.Response?.Headers?.Add("X-Total-Count", totalCount.ToString());
-            HttpContext.Current?.Response?.Headers?.Add("X-Total-Pages", Math.Floor((double)totalCount/count + 1).ToString());
+            HttpContext.Current?.Response?.Headers?.Add("X-Total-Pages", Math.Ceiling((double)totalCount / count).ToString());
             HttpContext.Current?.Response?.Headers?.Add("X-Current-Page", page.ToString());
             return filterQuery.Skip(((page) - 1) * count).Take(count);
         }
@@ -60,7 +61,7 @@ namespace HRDemoAPI.Utilities
                 return new HashSet<int>();
             }
             var managedDepartments = user.Claims
-                .Where(claim => claim.Type == ClaimTypes.Role)
+                .Where(claim => claim.Type == ClaimTypes.Role && claim.Value.Length > 8)
                 .Select(claim => int.Parse(claim.Value.Substring(8)))
                 .ToHashSet();
             if (managedDepartments.Count == 0)

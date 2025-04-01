@@ -31,7 +31,7 @@ namespace HRDemoAPICore.Utilities
             int count = queryCount == default ? totalCount : queryCount;
             int page = queryPage == default ? 1 : queryPage;
             context?.Response.Headers.Append("X-Total-Count", totalCount.ToString());
-            context?.Response.Headers.Append("X-Total-Pages", Math.Floor((double)totalCount / count + 1).ToString());
+            context?.Response.Headers.Append("X-Total-Pages", Math.Ceiling((double)totalCount / count).ToString());
             context?.Response.Headers.Append("X-Current-Page", page.ToString());
             return filterQuery.Skip((page - 1) * count).Take(count);
         }
@@ -43,7 +43,7 @@ namespace HRDemoAPICore.Utilities
                 return new HashSet<int>();
             }
             var managedDepartments = context.User.Claims
-                .Where(claim => claim.Type == ClaimTypes.Role)
+                .Where(claim => claim.Type == ClaimTypes.Role && claim.Value.Length > 8)
                 .Select(claim => int.Parse(claim.Value.Substring(8)))
                 .ToHashSet();
             if (managedDepartments.Count == 0)

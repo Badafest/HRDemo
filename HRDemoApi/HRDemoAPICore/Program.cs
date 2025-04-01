@@ -7,7 +7,6 @@ using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using static HRDemoAPICore.Filters.NullToEmptyStringModelBinder;
 
 var builder = WebApplication.CreateBuilder(args);
 HttpUtilities.Configuration = builder.Configuration;
@@ -26,11 +25,10 @@ builder.Services.AddScoped<HRDemoAuthorizeFilter>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration);
 
-// Configure model state validation filter, null string binder and string enum converter
+// Configure model state validation filter and string enum converter
 builder.Services.AddControllers(options =>
     {
         options.Filters.Add<ValidateModelAttribute>(); 
-        options.ModelBinderProviders.Insert(0, new NullToEmptyStringModelBinderProvider());
     })
     .AddNewtonsoftJson(options =>
     {

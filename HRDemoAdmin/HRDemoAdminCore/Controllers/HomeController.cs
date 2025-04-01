@@ -4,7 +4,7 @@ using Microsoft.Identity.Web;
 
 namespace HRDemoAdminCore.Controllers
 {
-    public class HomeController(IConfiguration configuration, IAuthorizationHeaderProvider authHeaderProvider) : ControllerBase(configuration, authHeaderProvider)
+    public class HomeController(IConfiguration configuration, IAuthorizationHeaderProvider authHeaderProvider) : HRDemoControllerBase(configuration, authHeaderProvider)
     {
         public ActionResult Index()
         {
