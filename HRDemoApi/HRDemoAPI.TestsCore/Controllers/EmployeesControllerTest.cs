@@ -30,7 +30,7 @@ namespace HRDemoAPI.TestsCore.Controllers
             EmployeesController controller = new(_dbContext);
 
             // Act
-            ObjectResult result = controller.Get(1);
+            ObjectResult result = controller.Get(id: 1);
             // Assert
             Assert.AreEqual((int)HttpStatusCode.OK, result.StatusCode);
 

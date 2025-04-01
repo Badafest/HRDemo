@@ -33,7 +33,7 @@ namespace HRDemoAPI.Tests.Controllers
             EmployeesController controller = new EmployeesController(new HRDemoApiDbContainer());
 
             // Act
-            HttpResponseMessage result = controller.Get(1);
+            HttpResponseMessage result = controller.Get(id: 1);
             // Assert
             Assert.IsTrue(result.IsSuccessStatusCode);
 
