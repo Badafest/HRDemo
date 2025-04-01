@@ -1,0 +1,56 @@
+﻿@model HRDemoAdmin.Services.Models.DepartmentResponse
+
+@{
+    ViewData["Title"] = "Department Details";
+}
+<div>
+    <h4>Department Details #@Model.DepartmentID</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        @if (Model.Manager != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Manager)
+            </dt>
+
+            <dd>
+                <div>
+                    <p class="mb-1">@Model.Manager.FirstName @Model.Manager.LastName (@Model.Manager.JobTitle)</p>
+                    
+                    <div><a href="mailto:@Model.Manager.Email">@Model.Manager.Email</a></div>
+                    <div><a href="tel:@Model.Manager.Phone">@Model.Manager.Phone</a></div>
+
+                    <address class="mt-2">
+                        <p class="m-0">@Model.Manager.Address.Line1</p>
+                        <p class="m-0">@Model.Manager.Address.Line2</p>
+                        <p class="m-0">@Model.Manager.Address.City</p>
+                        <p class="m-0">@Model.Manager.Address.State, @Model.Manager.Address.Country</p>
+                    </address>
+                </div>
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DepartmentID }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.DepartmentID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

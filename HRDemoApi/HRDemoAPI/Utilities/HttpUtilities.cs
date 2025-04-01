@@ -82,7 +82,7 @@ namespace HRDemoAPI.Utilities
 
         public static HttpResponseMessage ValidateManagerRole(int? departmentID)
         {
-            if (departmentID != null && departmentID != default && HttpContext.Current.User.IsInRole("Manager-${departmentID}"))
+            if (departmentID != null && departmentID != default && HttpContext.Current.User.IsInRole($"Manager-{departmentID}"))
             {
                 return null;
             }

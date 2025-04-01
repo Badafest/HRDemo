@@ -42,6 +42,12 @@
                 <span class="badge small bg-success">@ViewBag.UserRole</span>
             </div>
         </div>
+
+        @foreach (var jsFile in Directory.GetFiles(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/js"), "*.js", SearchOption.AllDirectories))
+        {
+            <script src="~/js/@jsFile.Substring(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/js").Length).Replace("\\", "/")"></script>
+        }
+
         <div class="container mt-4 px-0">
             @RenderBody()
         </div>
@@ -51,11 +57,6 @@
         </footer>
     </div>
 
-
-    @foreach (var jsFile in Directory.GetFiles(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/js"), "*.js", SearchOption.AllDirectories))
-    {
-        <script src="~/js/@jsFile.Substring(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/js").Length).Replace("\\", "/")"></script>
-    }
 </body>
 
 <script>

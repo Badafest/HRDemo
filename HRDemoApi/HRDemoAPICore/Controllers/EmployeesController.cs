@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HRDemoAPICore.Controllers
 {
-    //[ServiceFilter<HRDemoAuthorizeFilter>]
+    [ServiceFilter<HRDemoAuthorizeFilter>]
     [ApiController]
     [Route("api/[controller]")]
     public class EmployeesController(HRDemoApiContext hrDemoApiDb) : ControllerBase

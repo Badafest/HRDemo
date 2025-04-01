@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Html
+@using NonFactors.Mvc.Grid
+
+@model IEnumerable<HRDemoAdmin.Services.Models.DepartmentResponse>
+@{
+    ViewData["Title"] = "Departments";
+    // var grid = new WebGrid(source: Model, canPage: true, rowsPerPage: 3);
+    var grid = Html.Grid(Model).Build(columns =>
+    {
+        columns.Add(model => model.DepartmentID)
+               .Titled("ID")
+               .Css("column-small")
+               .Sortable(true);
+        columns.Add(model => model.Name)
+               .RenderedAs(item => new HtmlString($"<a href='./Departments/Details/{item.DepartmentID}'>{item.Name}</a>"))
+               .Sortable(true)
+               .Css("column-medium");
+        columns.Add(model => model.Description)
+               .Css("column-large");
+        columns.Add(model => model.Manager)
+               .Titled("Manager")
+               .RenderedAs(item => item.Manager?.Email)
+               .Css("column-medium");
+    })
+    .Pageable(pager =>
+    {
+        pager.CssClasses = "custom-pagination";
+        pager.RowsPerPage = 3;
+    })
+    .Css("table table-bordered table-striped")
+    .Empty("No records found.");
+
+}
+
+<div class="my-2 d-flex justify-content-between align-items-center">
+    <h2 class="title">Departments</h2>
+    @Html.ActionLink("Create New Department", "Create")
+</div>
+
+<form method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-auto">
+        <label for="name" class="col-form-label">Name:</label>
+        <input type="text" id="name" name="name" class="form-control" value="@Context.Request.Query["name"]">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+@grid
+

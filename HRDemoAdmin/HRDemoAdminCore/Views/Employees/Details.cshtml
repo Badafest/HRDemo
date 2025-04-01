@@ -1,0 +1,112 @@
+﻿@model HRDemoAdmin.Services.Models.EmployeeResponse
+
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<div>
+    <h4>Employee Details #@Model.EmployeeID</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+            <span> </span>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.JobTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.JobTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+            <button id="changeStatusBtn" class="btn btn-sm @Html.Raw(Model.Status == "Active" ? "btn-danger" : "btn-success")" data-status="@Model.Status">@(Model.Status == "Active" ? "Terminate" : "Activate")</button>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Salary)
+        </dt>
+
+        <dd>
+            $@Html.DisplayFor(model => model.Salary)
+        </dd>
+
+        @if (Model.Department != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Department)
+            </dt>
+
+            <dd>
+                <a href="/Departments/Details/@Model.Department.DepartmentID">@Html.DisplayFor(model => model.Department.Name)</a>
+            </dd>
+        }
+
+        @if (Model.Address != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+
+            <dd>
+                <address>
+                    <p class="m-0">@Model.Address.Line1</p>
+                    <p class="m-0">@Model.Address.Line2</p>
+                    <p class="m-0">@Model.Address.City</p>
+                    <p class="m-0">@Model.Address.State, @Model.Address.Country</p>
+                </address>
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeID }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.EmployeeID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<script>
+    $(document).ready(function () {
+        $("#changeStatusBtn").click(function () {
+            $.ajax({
+                url: `/Employees/EmployeeStatus/${@Model.EmployeeID}?hire=${$(this).data("status")!="Active"}`,
+                type: "POST",
+                success: function (response) {
+                    // Handle success response
+                    window.location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    $("html").html(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>

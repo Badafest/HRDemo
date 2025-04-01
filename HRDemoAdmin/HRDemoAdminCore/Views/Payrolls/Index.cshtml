@@ -1,0 +1,102 @@
+﻿
+@using NonFactors.Mvc.Grid;
+
+@model IEnumerable<HRDemoAdmin.Services.Models.PayrollResponse>
+@{
+    ViewData["Title"] = "Payrolls";
+    // var grid = new WebGrid(source: Model, canPage: true, rowsPerPage: 10);
+    var yearOptions = new int[] { DateTime.Now.Year, DateTime.Now.Year - 1 }
+    .Select(e => new SelectListItem
+            {
+                Text = e.ToString(),
+                Value = e.ToString()
+            });
+
+    var monthOptions = System.Globalization.DateTimeFormatInfo.InvariantInfo.MonthNames
+        .Where(m => !string.IsNullOrEmpty(m))
+        .Select((m, i) => new SelectListItem
+                {
+                    Text = m,
+                    Value = (i + 1).ToString()
+                });
+
+    var grid = Html.Grid(Model).Build(columns =>
+    {
+        columns.Add(model => model.PayrollID)
+            .Titled("ID")
+            .RenderedAs(model => Html.Raw($"<a href='/Payrolls/Details/{model.PayrollID}'>Payroll #{model.PayrollID}</a>"))
+            .Css("column-small");
+
+        columns.Add(model => model.Employee)
+            .Titled("Employee")
+            .RenderedAs(model => model.Employee == null
+                ? Html.Raw("<span>-</span>")
+                : Html.Raw($"<a href='/Employees/Details/{model.Employee.EmployeeID}'>" +
+                           $"{model.Employee.FirstName} {model.Employee.LastName}" +
+                           $"</a><br/>{model.Employee.Email}"))
+            .Css("column-medium");
+
+        columns.Add(model => $"{model.Year} {monthOptions.First(m => m.Value == model.Month.ToString()).Text}")
+            .Titled("Year/Month")
+            .Css("column-small");
+
+        columns.Add(model => model.Salary.GrossAmount)
+            .Titled("Gross Amount")
+            .RenderedAs(model => model.Salary.GrossAmount.ToString("C"))
+            .Css("column-small");
+
+        columns.Add(model => model.Salary.PreTaxDeduction)
+            .Titled("Pre Tax Deduction")
+            .RenderedAs(model => model.Salary.PreTaxDeduction.ToString("C"))
+            .Css("column-medium");
+
+        columns.Add(model => model.Salary.TaxDeduction)
+            .Titled("Tax Deduction")
+            .RenderedAs(model => model.Salary.TaxDeduction.ToString("C"))
+            .Css("column-small");
+
+        columns.Add(model => model.Salary.PostTaxDeduction)
+            .Titled("Post Tax Deduction")
+            .RenderedAs(model => model.Salary.PostTaxDeduction.ToString("C"))
+            .Css("column-medium");
+
+        columns.Add(model => model.Salary.NetAmount)
+            .Titled("Net Amount")
+            .RenderedAs(model => model.Salary.NetAmount.ToString("C"))
+            .Css("column-small");
+
+    })
+    .Pageable(pager =>
+    {
+        pager.CssClasses = "custom-pagination";
+        pager.RowsPerPage = 10;
+    })
+    .Css("table table-bordered table-striped")
+    .Empty("No records found.");
+}
+
+<div class="my-2 d-flex justify-content-between align-items-center">
+    <h2 class="title">Payrolls</h2>
+    @Html.ActionLink("Create New Payroll", "Create")
+</div>
+
+<form method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-auto">
+        <label for="employeeEmail" class="col-form-label">Employee:</label>
+        <input type="email" id="employeeEmail" name="employeeEmail" class="form-control" value="@Context.Request.Query["employeeEmail"]">
+    </div>
+    <div class="col-auto">
+        <label for="type" class="col-form-label">Year:</label>
+        @Html.DropDownList("year", yearOptions, new { @class = "form-control" })
+    </div>
+    <div class="col-auto">
+        <label for="type" class="col-form-label">Month:</label>
+        @Html.DropDownList("month", new SelectList(monthOptions, "Value", "Text", DateTime.Now.Month.ToString()), new { @class = "form-control" })
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+@grid
+

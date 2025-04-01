@@ -14,7 +14,7 @@ namespace HRDemoAdmin.Services.Models
         [DisplayName("Employee Email")]
         public string employeeEmail { get; set; }
         public int employeeId { get; set; }
-        public PayrollRequestSalary salary { get; set; }
+        public PayrollRequestSalary salary { get; set; } = new PayrollRequestSalary();
     }
     public class PayrollRequestSalary
     {

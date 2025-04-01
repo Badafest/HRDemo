@@ -59,7 +59,12 @@ namespace HRDemoAPI.Controllers
         // POST api/payrolls
         public HttpResponseMessage Post([FromBody]PayrollRequest payrollRequest)
         {
-            var validatedResponse = HttpUtilities.ValidateManagerRole(payrollRequest.EmployeeID);
+            var employee = _hRDemoAPIDb.Employees.Find(payrollRequest.EmployeeID);
+            if (employee == null)
+            {
+                return HttpUtilities.CreateResponseMessage($"Employee not found for given ID {payrollRequest.EmployeeID}", System.Net.HttpStatusCode.BadRequest);
+            }
+            var validatedResponse = HttpUtilities.ValidateManagerRole(employee.DepartmentID);
             if (validatedResponse != null)
             {
                 return validatedResponse;

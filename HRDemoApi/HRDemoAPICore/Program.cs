@@ -32,6 +32,8 @@ builder.Services.AddControllers(options =>
     })
     .AddNewtonsoftJson(options =>
     {
+        // ignore self referencing loops
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         options.SerializerSettings.Converters.Add(new StringEnumConverter());
         // Prevent Newtonsoftjson from serializing to camel case
         options.SerializerSettings.ContractResolver = new DefaultContractResolver()

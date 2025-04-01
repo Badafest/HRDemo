@@ -63,7 +63,7 @@ namespace HRDemoAPICore.Utilities
 
         public static ObjectResult? ValidateManagerRole(HttpContext context, int? departmentID)
         {
-            if (departmentID != null && departmentID != default && context.User.IsInRole("Manager-${departmentID}"))
+            if (departmentID != null && departmentID != default && context.User.IsInRole($"Manager-{departmentID}"))
             {
                 return null;
             }
